@@ -5,12 +5,11 @@ import {
 } from '@react-navigation/native-stack';
 
 import {Book} from './book';
-import {Home} from '../screens/Home';
-import {SafeAreaView} from 'react-native';
 import {ThemeContext} from '../../index';
+import {Products} from '../screens';
 
 export type PrivateStackParamList = {
-  Home: undefined;
+  Products: undefined;
 };
 
 export type PrivateStackScreenProps =
@@ -21,11 +20,11 @@ export const Private: FC = () => {
   const {theme} = useContext(ThemeContext);
   console.log(theme);
   return (
-    <Navigator initialRouteName={'Home'}>
+    <Navigator initialRouteName={'Products'}>
       <Screen
         options={{headerShown: false}}
-        name={Book.Home}
-        component={Home}
+        name={Book.Products}
+        component={Products}
       />
     </Navigator>
   );

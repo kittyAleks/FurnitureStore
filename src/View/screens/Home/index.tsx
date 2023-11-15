@@ -6,17 +6,23 @@ import {ThemeContext} from '../../../index';
 import {LightThemeType} from '../../../assets/themes/lightTheme';
 import {DarkThemeType} from '../../../assets/themes/darkTheme';
 import {getStyles} from './style';
+import {PublicStackScreenProps} from '../../navigation/types';
 
-export const Home: FC<LightThemeType | DarkThemeType> = () => {
+export const Home: FC<
+  PublicStackScreenProps & (LightThemeType | DarkThemeType)
+> = ({navigation}) => {
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
+
+  const goToRegistrationPage = () => {
+    navigation.navigate('Register');
+  };
 
   return (
     <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: theme.backgroundColor,
-        borderWidth: 1,
       }}>
       <View style={styles.container}>
         <View style={{paddingTop: 150}}>
@@ -29,9 +35,7 @@ export const Home: FC<LightThemeType | DarkThemeType> = () => {
           </Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => {
-              /* handle your action */
-            }}>
+            onPress={goToRegistrationPage}>
             <Text style={styles.buttonText}>→</Text>
           </TouchableOpacity>
         </View>

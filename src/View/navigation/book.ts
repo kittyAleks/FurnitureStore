@@ -1,7 +1,8 @@
 export enum Book {
-  Hello = 'Hello',
+  // Public
   Register = 'Register',
   Login = 'Login',
-  // Private
   Home = 'Home',
+  // Private
+  Products = 'Products',
 }

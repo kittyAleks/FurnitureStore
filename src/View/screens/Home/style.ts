@@ -9,7 +9,6 @@ export const getStyles = (theme: any) => {
     },
     headerText: {
       color: theme.secondaryText,
-      fontFamily: ' Pinyon Script',
       fontSize: 43.94,
       fontWeight: '400',
       fontStyle: 'italic',

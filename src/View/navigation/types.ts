@@ -1,7 +1,7 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 export type PublicStackParamList = {
-  Register: undefined;
+  Register: Object | undefined;
   Login: undefined;
   Home: undefined;
 };

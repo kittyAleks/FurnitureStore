@@ -7,8 +7,8 @@ import {Private} from './Private';
 export const Navigation: FC = () => {
   return (
     <NavigationContainer>
-      <Private />
-      {/*<Public />*/}
+      {/*<Private />*/}
+      <Public />
     </NavigationContainer>
   );
 };

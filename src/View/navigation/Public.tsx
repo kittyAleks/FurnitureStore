@@ -1,18 +1,25 @@
 import React, {FC} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 
 import {PublicStackParamList} from './types';
 import {Book} from './book';
 
-import {Home, Login} from '../screens';
+import {Home, Login, Register} from '../screens';
 
 const Stack = createNativeStackNavigator<PublicStackParamList>();
 
 export const Public: FC = () => {
   return (
-    <Stack.Navigator initialRouteName={Book.Onboarding}>
+    <Stack.Navigator initialRouteName={Book.Home}>
       <Stack.Group>
+        <Stack.Screen
+          name={Book.Home}
+          options={{
+            headerTitle: '',
+            headerShown: false,
+          }}
+          component={Home}
+        />
         <Stack.Screen
           name={Book.Register}
           options={{

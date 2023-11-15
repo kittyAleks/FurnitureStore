@@ -1,5 +1,5 @@
 export const LightTheme = {
-  backgroundColor: 'rgba(158, 162, 162, 0.5)',
+  backgroundColor: '#9EA2A2',
   // text: 'white',
   primaryText: '#304164',
   secondaryText: '#FFFFFF',
