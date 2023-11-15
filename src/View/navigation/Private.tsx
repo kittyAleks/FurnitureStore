@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useContext} from 'react';
 import {
   createNativeStackNavigator,
   NativeStackScreenProps,
@@ -6,6 +6,8 @@ import {
 
 import {Book} from './book';
 import {Home} from '../screens/Home';
+import {SafeAreaView} from 'react-native';
+import {ThemeContext} from '../../index';
 
 export type PrivateStackParamList = {
   Home: undefined;
@@ -16,8 +18,10 @@ export type PrivateStackScreenProps =
 
 export const Private: FC = () => {
   const {Navigator, Screen} = createNativeStackNavigator();
+  const {theme} = useContext(ThemeContext);
+  console.log(theme);
   return (
-    <Navigator initialRouteName={'LocationSettings'}>
+    <Navigator initialRouteName={'Home'}>
       <Screen
         options={{headerShown: false}}
         name={Book.Home}
