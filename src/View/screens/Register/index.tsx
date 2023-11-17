@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -14,6 +14,7 @@ import {LightThemeType} from '../../../assets/themes/lightTheme';
 import {DarkThemeType} from '../../../assets/themes/darkTheme';
 import {getStyles} from './style';
 import {PublicStackScreenProps} from '../../navigation/types';
+import {API_URL} from '@env';
 
 export const Register: FC<
   PublicStackScreenProps & (LightThemeType | DarkThemeType)
@@ -21,6 +22,9 @@ export const Register: FC<
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
   const [isChecked, setChecked] = useState(false);
+  useEffect(() => {
+    console.log(API_URL);
+  }, []);
 
   return (
     <SafeAreaView
@@ -28,7 +32,7 @@ export const Register: FC<
         flex: 1,
         backgroundColor: theme.backgroundColor,
       }}>
-      <View style={styles.container}>
+      <View style={[styles.container]}>
         <Text style={styles.header}>Create your Account!</Text>
 
         <View style={[styles.inputContainer, {marginBottom: 30}]}>
