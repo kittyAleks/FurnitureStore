@@ -14,18 +14,28 @@ import {LightThemeType} from '../../../assets/themes/lightTheme';
 import {DarkThemeType} from '../../../assets/themes/darkTheme';
 import {getStyles} from './style';
 import {PublicStackScreenProps} from '../../navigation/types';
-import {API_URL} from '@env';
+import {useUser} from '../../../bus/user';
+import {User} from '../../../bus/user/types';
 
 export const Register: FC<
   PublicStackScreenProps & (LightThemeType | DarkThemeType)
 > = ({navigation}) => {
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
-  const [isChecked, setChecked] = useState(false);
-  useEffect(() => {
-    console.log(API_URL);
-  }, []);
+  const {addUser} = useUser();
 
+  const [isChecked, setChecked] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  console.log('emailpassword', email, password);
+
+  const registerUser = () => {
+    const data: User = {
+      email: email,
+      password: password,
+    };
+    addUser(data);
+  };
   return (
     <SafeAreaView
       style={{
@@ -38,6 +48,7 @@ export const Register: FC<
         <View style={[styles.inputContainer, {marginBottom: 30}]}>
           {/*<Image source={iconSource} style={styles.iconStyle} />*/}
           <TextInput
+            onChangeText={setEmail}
             placeholder="Email"
             secureTextEntry={true}
             style={styles.inputStyle}
@@ -46,6 +57,7 @@ export const Register: FC<
         <View style={styles.inputContainer}>
           {/*<Image source={iconSource} style={styles.iconStyle} />*/}
           <TextInput
+            onChangeText={setPassword}
             placeholder="Password"
             secureTextEntry={true}
             style={styles.inputStyle}
@@ -66,7 +78,7 @@ export const Register: FC<
           <Text style={styles.checkboxLabel}>Remember me</Text>
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity onPress={registerUser} style={styles.button}>
           <Text style={styles.buttonText}>Sign up</Text>
         </TouchableOpacity>
 
