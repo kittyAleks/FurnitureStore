@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useState} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -22,19 +22,24 @@ export const Register: FC<
 > = ({navigation}) => {
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
-  const {addUser} = useUser();
+  const {addUser, user} = useUser();
 
   const [isChecked, setChecked] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log('emailpassword', email, password);
+  const [error, setError] = useState<string | null>(null);
 
-  const registerUser = () => {
+  const registerUser = async () => {
     const data: User = {
       email: email,
       password: password,
     };
     addUser(data);
+    if (user.status === 400 || user.status === 500) {
+      setError(user.message);
+    } else {
+      navigation.navigate('Login');
+    }
   };
   return (
     <SafeAreaView
@@ -63,7 +68,7 @@ export const Register: FC<
             style={styles.inputStyle}
           />
         </View>
-
+        <Text style={styles.error}>{error}</Text>
         <View style={styles.checkboxContainer}>
           <CheckBox
             disabled={false}
@@ -75,6 +80,7 @@ export const Register: FC<
             value={isChecked}
             onValueChange={() => setChecked(!isChecked)}
           />
+
           <Text style={styles.checkboxLabel}>Remember me</Text>
         </View>
 

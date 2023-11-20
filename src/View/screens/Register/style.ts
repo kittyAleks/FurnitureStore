@@ -33,6 +33,11 @@ export const getStyles = (theme: any) => {
       fontSize: 16,
       color: theme.secondaryText,
     },
+    error: {
+      marginTop: 10,
+      fontSize: 16,
+      color: theme.secondaryText,
+    },
     checkboxContainer: {
       justifyContent: 'space-around',
       flexDirection: 'row',

@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const Routes = require('./routes/userRoutes');
+const Routes = require('./routes/authRoutes');
 mongoose
   .connect('mongodb://localhost:27017/MyAppDB')
   .then(() => console.log('Mongodb Connected!'))

@@ -51,6 +51,11 @@ export const getStyles = (theme: any) => {
       color: theme.secondaryText,
       fontWeight: '600',
     },
+    error: {
+      marginTop: 10,
+      fontSize: 16,
+      color: theme.secondaryText,
+    },
     button: {
       width: '100%',
       paddingHorizontal: 20,

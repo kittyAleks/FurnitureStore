@@ -10,7 +10,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Другие поля, если они есть
 });
 
 const User = mongoose.model('User', userSchema);

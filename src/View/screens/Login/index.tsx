@@ -14,13 +14,30 @@ import {LightThemeType} from '../../../assets/themes/lightTheme';
 import {DarkThemeType} from '../../../assets/themes/darkTheme';
 import {getStyles} from './style';
 import {PublicStackScreenProps} from '../../navigation/types';
+import {useUser} from '../../../bus/user';
 
 export const Login: FC<
   PublicStackScreenProps & (LightThemeType | DarkThemeType)
 > = ({navigation}) => {
+  const {signIn, user} = useUser();
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
+
   const [isChecked, setChecked] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const [error, setError] = useState(null);
+  const handleSignIn = async () => {
+    const data = {
+      email: email,
+      password: password,
+    };
+    await signIn(data);
+    if (user.status === 400 || user.status === 500) {
+      setError(user.message);
+    }
+  };
 
   return (
     <SafeAreaView
@@ -34,6 +51,7 @@ export const Login: FC<
         <View style={[styles.inputContainer, {marginBottom: 30}]}>
           {/*<Image source={iconSource} style={styles.iconStyle} />*/}
           <TextInput
+            onChangeText={setEmail}
             placeholder="Email"
             secureTextEntry={true}
             style={styles.inputStyle}
@@ -42,12 +60,13 @@ export const Login: FC<
         <View style={styles.inputContainer}>
           {/*<Image source={iconSource} style={styles.iconStyle} />*/}
           <TextInput
+            onChangeText={setPassword}
             placeholder="Password"
             secureTextEntry={true}
             style={styles.inputStyle}
           />
         </View>
-
+        <Text style={styles.error}>{error}</Text>
         <View style={styles.checkboxContainer}>
           <CheckBox
             disabled={false}
@@ -62,8 +81,8 @@ export const Login: FC<
           <Text style={styles.checkboxLabel}>Remember me</Text>
         </View>
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Sign up</Text>
+        <TouchableOpacity onPress={handleSignIn} style={styles.button}>
+          <Text style={styles.buttonText}>Sign in</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.forgetContainer}>
           <Text style={styles.forgetText}>Forget the password?</Text>

@@ -6,8 +6,11 @@ import {ThemeContext} from '../../../index';
 import {LightThemeType} from '../../../assets/themes/lightTheme';
 import {DarkThemeType} from '../../../assets/themes/darkTheme';
 import {getStyles} from './style';
+import {PrivateStackParamList} from '../../navigation/Private';
 
-export const Products: FC<LightThemeType | DarkThemeType> = () => {
+export const Products: FC<
+  PrivateStackParamList & (LightThemeType | DarkThemeType)
+> = () => {
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
 
@@ -19,7 +22,7 @@ export const Products: FC<LightThemeType | DarkThemeType> = () => {
         borderWidth: 1,
       }}>
       <View style={styles.container}>
-        <Text>Register</Text>
+        <Text>Products</Text>
       </View>
     </SafeAreaView>
   );
