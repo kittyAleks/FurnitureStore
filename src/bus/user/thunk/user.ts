@@ -10,7 +10,7 @@ import * as types from '../types';
 // Action
 const userAction = createAction<types.UserResponse>('user/user');
 
-export const createUser = createAsyncThunk<types.UserResponse, types.User>(
+export const createUser = createAsyncThunk(
   userAction.type,
   async (userData, {rejectWithValue}) => {
     try {

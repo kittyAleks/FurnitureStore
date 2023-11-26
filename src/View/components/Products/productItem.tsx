@@ -3,7 +3,7 @@ import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 import {getStyles} from '../../screens/Products/style';
 type ProductItem = {
-  id?: string;
+  _id?: string;
   title?: string;
   description?: string;
   price?: string;
@@ -18,7 +18,7 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
   console.log('item', item);
   const styles = getStyles(theme);
   return (
-    <View style={styles.card}>
+    <View key={item._id} style={styles.card}>
       <Image
         source={require('../../../assets/products/table.png')}
         style={styles.image}
