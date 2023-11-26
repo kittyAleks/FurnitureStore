@@ -20,6 +20,7 @@ export const Login: FC<
   PublicStackScreenProps & (LightThemeType | DarkThemeType)
 > = ({navigation}) => {
   const {signIn, user} = useUser();
+  console.log('useruser', user);
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
 
@@ -43,7 +44,7 @@ export const Login: FC<
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.background.one,
       }}>
       <View style={styles.container}>
         <Text style={styles.header}>Welcome back!</Text>

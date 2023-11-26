@@ -8,13 +8,13 @@ export const getStyles = (theme: any) => {
       paddingHorizontal: 25,
     },
     headerText: {
-      color: theme.secondaryText,
+      color: theme.primaryText,
       fontSize: 43.94,
       fontWeight: '400',
       fontStyle: 'italic',
     },
     subHeaderText: {
-      color: theme.secondaryText,
+      color: theme.primaryText,
       fontSize: 43.94,
       // fontFamily: 'Montserrat',
       fontStyle: 'italic',
@@ -28,7 +28,7 @@ export const getStyles = (theme: any) => {
     },
     descriptionText: {
       fontSize: 28,
-      color: theme.secondaryText,
+      color: theme.primaryText,
       width: 225,
     },
     button: {

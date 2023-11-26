@@ -8,25 +8,25 @@ import {API_URL} from '@env';
 import * as types from '../types';
 
 // Action
-const userAction = createAction<types.UserState>('user/user');
+const userAction = createAction<types.UserResponse>('user/user');
 
-export const createUser = createAsyncThunk<types.UserState, types.User>(
+export const createUser = createAsyncThunk<types.UserResponse, types.User>(
   userAction.type,
   async (userData, {rejectWithValue}) => {
-    return await axios
-      .post(`${API_URL}/users/register`, userData)
-      .then(res => {
-        return res.data;
-      })
-      .catch(err => {
-        if (err.response) {
-          return rejectWithValue(err.response);
-        } else {
-          return rejectWithValue({message: 'Something went wrong'});
-        }
-      });
+    try {
+      const response = await axios.post(`${API_URL}/users/register`, userData);
+      console.log('createUser_res', response);
+      return response;
+    } catch (err: any) {
+      if (err.response) {
+        return rejectWithValue(err.response);
+      } else {
+        return rejectWithValue({message: 'Something went wrong'});
+      }
+    }
   },
 );
+
 export const loginUser = createAsyncThunk<any, any>(
   'user/loginUser',
   async (userData, {rejectWithValue}) => {

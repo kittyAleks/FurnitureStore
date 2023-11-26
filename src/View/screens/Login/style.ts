@@ -12,12 +12,12 @@ export const getStyles = (theme: any) => {
       fontSize: 24,
       fontWeight: 'bold',
       marginBottom: 20,
-      color: theme.secondaryText,
+      color: theme.primaryText,
     },
     inputContainer: {
       flexDirection: 'row',
       alignItems: 'center',
-      backgroundColor: 'rgba(255, 255, 255, 0.30)',
+      backgroundColor: theme.background.six,
       borderRadius: 9,
       paddingVertical: 14,
       paddingHorizontal: 13,
@@ -31,7 +31,12 @@ export const getStyles = (theme: any) => {
     inputStyle: {
       flex: 1,
       fontSize: 16,
-      color: theme.secondaryText,
+      color: theme.primaryText,
+    },
+    error: {
+      marginTop: 10,
+      fontSize: 16,
+      color: theme.danger,
     },
     checkboxContainer: {
       justifyContent: 'space-around',
@@ -48,13 +53,8 @@ export const getStyles = (theme: any) => {
     },
     checkboxLabel: {
       fontSize: 16,
-      color: theme.secondaryText,
+      color: theme.primaryText,
       fontWeight: '600',
-    },
-    error: {
-      marginTop: 10,
-      fontSize: 16,
-      color: theme.secondaryText,
     },
     button: {
       width: '100%',
@@ -66,9 +66,15 @@ export const getStyles = (theme: any) => {
       alignItems: 'center',
     },
     buttonText: {
-      color: theme.secondaryText,
+      color: theme.primaryText,
       fontSize: 18,
       fontWeight: '700',
+    },
+    containerСontinue: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginVertical: 20,
     },
     forgetContainer: {
       marginBottom: 50,
@@ -78,12 +84,6 @@ export const getStyles = (theme: any) => {
       color: '#F3DEBA',
       fontSize: 16,
     },
-    containerСontinue: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginVertical: 20,
-    },
     line: {
       flex: 1,
       height: 1,
@@ -91,7 +91,7 @@ export const getStyles = (theme: any) => {
     },
     text: {
       marginHorizontal: 10,
-      color: theme.secondaryText,
+      color: theme.primaryText,
       fontSize: 16,
     },
     socialMediaContainer: {
@@ -109,7 +109,7 @@ export const getStyles = (theme: any) => {
       bottom: 10,
     },
     footerText: {
-      color: theme.secondaryText,
+      color: theme.primaryText,
       paddingRight: 5,
       fontSize: 16,
     },

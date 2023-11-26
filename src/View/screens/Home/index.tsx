@@ -47,7 +47,7 @@ export const Home: FC<
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.background.one,
       }}>
       <View style={styles.container}>
         <View style={{paddingTop: 150}}>

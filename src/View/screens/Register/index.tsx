@@ -15,14 +15,14 @@ import {DarkThemeType} from '../../../assets/themes/darkTheme';
 import {getStyles} from './style';
 import {PublicStackScreenProps} from '../../navigation/types';
 import {useUser} from '../../../bus/user';
-import {User} from '../../../bus/user/types';
+import {User, UserResponse} from '../../../bus/user/types';
 
 export const Register: FC<
   PublicStackScreenProps & (LightThemeType | DarkThemeType)
 > = ({navigation}) => {
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
-  const {addUser, user} = useUser();
+  const {addUser} = useUser();
 
   const [isChecked, setChecked] = useState(false);
   const [email, setEmail] = useState('');
@@ -34,18 +34,22 @@ export const Register: FC<
       email: email,
       password: password,
     };
-    addUser(data);
-    if (user.status === 400 || user.status === 500) {
-      setError(user.message);
-    } else {
-      navigation.navigate('Login');
+    try {
+      const response = await addUser(data);
+      if (response.payload.status === 400 || response.payload.status === 500) {
+        setError(response.payload.data.message);
+      } else {
+        navigation.navigate('Login');
+      }
+    } catch (error: any) {
+      setError(error.toString());
     }
   };
   return (
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: theme.backgroundColor,
+        backgroundColor: theme.background.one,
       }}>
       <View style={[styles.container]}>
         <Text style={styles.header}>Create your Account!</Text>

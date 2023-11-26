@@ -4,12 +4,30 @@ export type User = {
   password: string;
 };
 
-export interface UserState {
+export type UserState = {
   user: User | null;
   token: string | null;
   error: string | null;
   message: string | null;
   status: number | null;
+};
+
+interface AxiosResponseData {
+  message: string;
+}
+
+interface AxiosHeaders {
+  connection: string;
+  'content-length': string;
+}
+
+export interface UserResponse {
+  data: AxiosResponseData;
+  status: number;
+  statusText: string | undefined;
+  headers: AxiosHeaders;
+  config: object;
+  request: XMLHttpRequest;
 }
 
 // Contracts

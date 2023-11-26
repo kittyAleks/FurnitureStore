@@ -11,7 +11,7 @@ export const useUser = () => {
   return {
     user,
     addUser: (userData: User) => {
-      dispatch(createUser(userData));
+      return dispatch(createUser(userData));
     },
     signIn: (userData: User) => {
       dispatch(loginUser(userData));
