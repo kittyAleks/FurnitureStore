@@ -20,7 +20,6 @@ export const Login: FC<
   PublicStackScreenProps & (LightThemeType | DarkThemeType)
 > = ({navigation}) => {
   const {signIn, user} = useUser();
-  console.log('useruser', user);
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
 
@@ -34,9 +33,13 @@ export const Login: FC<
       email: email,
       password: password,
     };
-    await signIn(data);
-    if (user.status === 400 || user.status === 500) {
-      setError(user.message);
+    try {
+      const resp = await signIn(data);
+      if (user.status === null) {
+        setError(resp.payload.message);
+      }
+    } catch (err) {
+      setError(err);
     }
   };
 

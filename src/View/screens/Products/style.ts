@@ -8,6 +8,7 @@ export const getStyles = (theme: any) => {
     },
     card: {
       flexDirection: 'row',
+      marginBottom: 10,
       width: '100%',
       padding: 10,
       backgroundColor: '#f4f4f4',

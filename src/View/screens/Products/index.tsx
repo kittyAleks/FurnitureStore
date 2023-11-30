@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {FlatList, SafeAreaView, View} from 'react-native';
+import {ActivityIndicator, FlatList, SafeAreaView, View} from 'react-native';
 import {useContext} from 'react';
 
 import {ThemeContext} from '../../../index';
@@ -17,6 +17,7 @@ export const Products: FC<
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
   const {getProductsList, products} = useProducts();
+  const {products: productsList, loading} = products;
 
   useEffect(() => {
     getProductsList();
@@ -29,12 +30,15 @@ export const Products: FC<
         backgroundColor: theme.background.one,
       }}>
       <View style={styles.container}>
-        <FlatList
-          data={products}
-          renderItem={({item}) => <ProductItem item={item} theme={theme} />}
-          keyExtractor={item => item._id}
-          ItemSeparatorComponent={<View style={styles.separator} />}
-        />
+        {loading ? (
+          <ActivityIndicator size={'large'} />
+        ) : (
+          <FlatList
+            data={productsList}
+            renderItem={({item}) => <ProductItem item={item} theme={theme} />}
+            keyExtractor={item => item._id}
+          />
+        )}
       </View>
     </SafeAreaView>
   );

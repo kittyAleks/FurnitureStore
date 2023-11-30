@@ -6,7 +6,6 @@ import {createUser, loginUser} from './thunk/user';
 export const useUser = () => {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
-  console.log('state_user', user);
 
   return {
     user,
@@ -14,7 +13,7 @@ export const useUser = () => {
       return dispatch(createUser(userData));
     },
     signIn: (userData: User) => {
-      dispatch(loginUser(userData));
+      return dispatch(loginUser(userData));
     },
   };
 };

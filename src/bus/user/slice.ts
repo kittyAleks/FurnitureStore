@@ -11,7 +11,7 @@ import {createUser, loginUser} from './thunk/user';
 const initialState = {
   user: null,
   token: null,
-  error: '',
+  error: null,
   message: null,
   status: null,
 };
@@ -43,10 +43,7 @@ export const userSlice = createSlice({
       state.message = message;
     });
     builder.addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
-      const {message} = action.payload.data;
-      state.error = message;
-      state.status = action.payload.status;
-      state.message = message;
+      state.error = action.payload.message;
     });
   },
 });

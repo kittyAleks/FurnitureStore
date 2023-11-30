@@ -18,19 +18,31 @@ const register = async (req, res) => {
   }
 };
 const login = async (req, res) => {
-  const {email, password} = req.body;
-  // Find user in DB by email
-  const user = await USER.findOne({email});
-  console.log('user', user);
-  const token = generateToken(user);
+  try {
+    const {email, password} = req.body;
 
-  const isMatch = await checkPassword(password, user.password);
-  if (!isMatch) {
+    // Find user in DB by email
+    const user = await USER.findOne({email});
+    if (!user) {
+      return res
+        .status(400)
+        .json({message: 'User not found. Please register!'});
+    }
+
+    const isMatch = await checkPassword(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({message: 'Wrong password! Please, try again!'});
+    }
+
+    const token = generateToken(user);
+    return res.status(200).json({message: 'Login successful!', token});
+  } catch (error) {
+    console.error('Server error:', error);
     return res
-      .status(400)
-      .json({message: 'Wrong password! Please, try again!'});
-  } else {
-    res.status(200).json({message: 'User logged in!', token});
+      .status(500)
+      .json({message: 'Server error. Please try again later.'});
   }
 };
 

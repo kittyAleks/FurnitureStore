@@ -1,25 +1,28 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit';
+
 import {getProducts} from './thunk/products';
+import * as types from '../products/types';
 
 const initialState = {
   products: null,
+  loading: false,
 };
 
 export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {},
-  extraReducers: builder => {
+  extraReducers: (builder: ActionReducerMapBuilder<types.ProductsState>) => {
     builder
-      // .addCase(getProducts.pending, state => {
-      //   state.loading = true;
-      // })
+      .addCase(getProducts.pending, state => {
+        state.loading = true;
+      })
       .addCase(getProducts.fulfilled, (state, action) => {
-        console.log('action_fulfilled', action);
         state.products = action.payload.products;
+        state.loading = false;
       })
       .addCase(getProducts.rejected, (state, action) => {
-        console.log('action_rejected', action);
+        state.loading = false;
       });
   },
 });

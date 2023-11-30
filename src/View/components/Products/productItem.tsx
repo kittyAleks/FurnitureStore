@@ -1,9 +1,9 @@
-import React, {FC} from 'react';
+import React, {ComponentType, FC} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 
 import {getStyles} from '../../screens/Products/style';
 type ProductItem = {
-  _id?: string;
+  _id: string;
   title?: string;
   description?: string;
   price?: string;
@@ -15,7 +15,6 @@ type ProductItemType = {
 };
 
 export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
-  console.log('item', item);
   const styles = getStyles(theme);
   return (
     <View key={item._id} style={styles.card}>

@@ -7,7 +7,10 @@ export type Products = {
   price: number;
   imageUrl: string;
 };
-export type ProductsState = Array<Products> | null;
+export type ProductsState = {
+  products: Products[] | null;
+  loading: boolean;
+};
 
 // Contracts
 export type BaseContact<T = any> = CaseReducer<ProductsState, PayloadAction<T>>;

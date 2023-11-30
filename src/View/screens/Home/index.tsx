@@ -22,7 +22,6 @@ export const Home: FC<
 > = ({navigation}) => {
   const {theme} = useContext(ThemeContext);
   const position = new Animated.ValueXY({x: 11, y: 12});
-  console.log('position', position);
   const styles = getStyles(theme);
 
   const goToRegistrationPage = () => {

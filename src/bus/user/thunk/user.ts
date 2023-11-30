@@ -10,12 +10,11 @@ import * as types from '../types';
 // Action
 const userAction = createAction<types.UserResponse>('user/user');
 
-export const createUser = createAsyncThunk(
+export const createUser = createAsyncThunk<any, any>(
   userAction.type,
   async (userData, {rejectWithValue}) => {
     try {
       const response = await axios.post(`${API_URL}/users/register`, userData);
-      console.log('createUser_res', response);
       return response;
     } catch (err: any) {
       if (err.response) {
@@ -33,11 +32,9 @@ export const loginUser = createAsyncThunk<any, any>(
     return await axios
       .post(`${API_URL}/users/login`, userData)
       .then(res => {
-        console.log('loginUser_res', res);
         return res;
       })
       .catch(err => {
-        console.log('err', err);
         if (err.response) {
           return rejectWithValue(err.response);
         } else {
