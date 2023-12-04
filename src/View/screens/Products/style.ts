@@ -1,12 +1,14 @@
 import {StyleSheet} from 'react-native';
 
-export const getStyles = (theme: any) => {
+export const getStyles = (theme: any, opacity?: any) => {
+  console.log('opacityopacity', opacity);
   return StyleSheet.create({
     container: {
       flex: 1,
       paddingHorizontal: 25,
     },
     card: {
+      opacity: opacity,
       flexDirection: 'row',
       marginBottom: 10,
       width: '100%',
@@ -44,7 +46,12 @@ export const getStyles = (theme: any) => {
       color: '#28A745', // или другой цвет из вашей палитры
     },
     button: {
-      // Стили для кнопки
+      width: 20,
+      height: 20,
+      borderRadius: 10,
+      backgroundColor: '#28A745',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     separator: {
       height: 10,

@@ -6,10 +6,7 @@ import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {API_URL} from '@env';
 
 import * as types from '../types';
-import {
-  removeToken,
-  saveToken,
-} from '../../../storage/userTokenStorage';
+import {removeToken, saveToken} from '../../../storage/userTokenStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Action

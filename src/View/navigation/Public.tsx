@@ -4,7 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {PublicStackParamList} from './types';
 import {Book} from './book';
 
-import {Home, Login, Products, Register} from '../screens';
+import {Home, Login, Register} from '../screens';
 
 const Stack = createNativeStackNavigator<PublicStackParamList>();
 

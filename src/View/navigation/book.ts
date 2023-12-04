@@ -5,4 +5,5 @@ export enum Book {
   Home = 'Home',
   // Private
   Products = 'ProductsMain',
+  ProductDetails = 'ProductDetails',
 }

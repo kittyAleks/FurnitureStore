@@ -5,25 +5,14 @@ import {Public} from './Public';
 import {Private} from './Private';
 import {useUser} from '../../bus/user';
 import {ActivityIndicator} from 'react-native';
+import {fetchToken} from '../../helpers/fetchUserToken';
 
 export const Navigation: FC = () => {
   const {getUserToken} = useUser();
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const fetchToken = async () => {
-      try {
-        let userToken = await getUserToken();
-        console.log('userToken', userToken);
-        const token = userToken.payload?.token || null;
-        setToken(token);
-      } catch (error) {
-        console.error('Token_error', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchToken();
+    fetchToken(setToken, setLoading, getUserToken);
   }, []);
 
   if (loading) {

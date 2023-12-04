@@ -11,17 +11,16 @@ import {useContext} from 'react';
 import {ThemeContext} from '../../../index';
 import {LightThemeType} from '../../../assets/themes/lightTheme';
 import {DarkThemeType} from '../../../assets/themes/darkTheme';
+import {PrivateStackScreenProps} from '../../navigation/types';
 import {getStyles} from './style';
-import {PrivateStackParamList} from '../../navigation/Private';
 
 import {ProductItem} from '../../components/Products/productItem';
 import {useProducts} from '../../../bus/products';
 import {useUser} from '../../../bus/user';
 
 export const Products: FC<
-  PrivateStackParamList & (LightThemeType | DarkThemeType)
+  PrivateStackScreenProps & (LightThemeType | DarkThemeType)
 > = () => {
-
   const {theme} = useContext(ThemeContext);
   const {logout} = useUser();
   const styles = getStyles(theme);

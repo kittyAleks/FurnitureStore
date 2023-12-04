@@ -1,7 +1,8 @@
-import React, {ComponentType, FC} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import React, {ComponentType, FC, useEffect, useMemo} from 'react';
+import {Image, Text, TouchableOpacity, View, Animated} from 'react-native';
 
 import {getStyles} from '../../screens/Products/style';
+import {useNavigation} from '@react-navigation/native';
 type ProductItem = {
   _id: string;
   title?: string;
@@ -15,9 +16,23 @@ type ProductItemType = {
 };
 
 export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
-  const styles = getStyles(theme);
+  const opacity = new Animated.Value(0);
+  const styles = useMemo(() => getStyles(theme, opacity), [theme, opacity]);
+  const navigation = useNavigation();
+  const goToDetailProduct = () => {
+    navigation.navigate('ProductDetails', {item});
+  };
+
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
+  }, [opacity]);
+
   return (
-    <View key={item._id} style={styles.card}>
+    <Animated.View key={item._id} style={styles.card}>
       <Image
         source={require('../../../assets/products/table.png')}
         style={styles.image}
@@ -32,11 +47,11 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
             justifyContent: 'space-between',
           }}>
           <Text style={styles.price}>{item.price}</Text>
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={goToDetailProduct} style={styles.button}>
             <Text>➔</Text>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 };

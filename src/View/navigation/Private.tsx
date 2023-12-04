@@ -1,12 +1,15 @@
 import React, {FC, useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {View, Text} from 'react-native';
 
 import {Book} from './book';
 import {ThemeContext} from '../../index';
 import {Products} from '../screens';
+import {PrivateStackParamList} from './types';
+import {ProductDetails} from '../components/Products/ProductDetails/ProductDetails';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,14 +20,26 @@ const CartScreen = () => {
     </View>
   );
 };
+const LikeScreen = () => {
+  return (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Text>LikeScreen!</Text>
+    </View>
+  );
+};
 
-const ProductsStack = createNativeStackNavigator();
+const ProductsStack = createNativeStackNavigator<PrivateStackParamList>();
 const ProductsStackNavigator = () => {
   return (
     <ProductsStack.Navigator initialRouteName={Book.Products}>
       <ProductsStack.Screen
         name={Book.Products}
         component={Products}
+        options={{headerShown: false}}
+      />
+      <ProductsStack.Screen
+        name={Book.ProductDetails}
+        component={ProductDetails}
         options={{headerShown: false}}
       />
     </ProductsStack.Navigator>
@@ -43,6 +58,8 @@ export const Private: FC = () => {
 
           if (route.name === 'Products') {
             iconName = focused ? 'home' : 'home-outline';
+          } else if (route.name === 'Like') {
+            iconName = focused ? 'heart' : 'heart-outline';
           } else if (route.name === 'Cart') {
             iconName = focused ? 'cart' : 'cart-outline';
           }
@@ -51,6 +68,9 @@ export const Private: FC = () => {
         },
         tabBarActiveTintColor: 'tomato',
         tabBarInactiveTintColor: 'gray',
+        tabBarStyle: {
+          backgroundColor: theme.background.one,
+        },
       })}>
       <Tab.Screen
         name={'Products'}
@@ -58,6 +78,7 @@ export const Private: FC = () => {
         options={{headerShown: false}}
       />
       <Tab.Screen name={'Cart'} component={CartScreen} />
+      <Tab.Screen name={'Like'} component={LikeScreen} />
     </Tab.Navigator>
   );
 };
