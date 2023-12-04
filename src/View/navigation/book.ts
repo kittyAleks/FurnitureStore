@@ -4,5 +4,5 @@ export enum Book {
   Login = 'Login',
   Home = 'Home',
   // Private
-  Products = 'Products',
+  Products = 'ProductsMain',
 }

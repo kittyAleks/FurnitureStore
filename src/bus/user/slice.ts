@@ -6,7 +6,7 @@ import {
 
 import * as types from './types';
 
-import {createUser, loginUser} from './thunk/user';
+import {createUser, loadUser, loginUser, logoutUser} from './thunk/user';
 
 const initialState = {
   user: null,
@@ -44,6 +44,18 @@ export const userSlice = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.message;
+    });
+    builder.addCase(loadUser.fulfilled, (state, action) => {
+      state.token = action.payload.token;
+      state.error = null;
+    });
+    builder.addCase(loadUser.rejected, (state, action: PayloadAction<any>) => {
+      state.error = action.payload.message;
+      state.token = null;
+    });
+    builder.addCase(logoutUser.fulfilled, (state, action) => {
+      state.token = null;
+      state.error = null;
     });
   },
 });

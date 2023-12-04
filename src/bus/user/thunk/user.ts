@@ -6,6 +6,11 @@ import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 import {API_URL} from '@env';
 
 import * as types from '../types';
+import {
+  removeToken,
+  saveToken,
+} from '../../../storage/userTokenStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Action
 const userAction = createAction<types.UserResponse>('user/user');
@@ -32,6 +37,7 @@ export const loginUser = createAsyncThunk<any, any>(
     return await axios
       .post(`${API_URL}/users/login`, userData)
       .then(res => {
+        saveToken(res.data.token);
         return res;
       })
       .catch(err => {
@@ -41,5 +47,32 @@ export const loginUser = createAsyncThunk<any, any>(
           return rejectWithValue({message: 'Something went wrong'});
         }
       });
+  },
+);
+export const loadUser = createAsyncThunk<any>(
+  'user/loadUser',
+  async (_, {rejectWithValue}) => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        return {token};
+      } else {
+        return rejectWithValue({message: 'Token not found'});
+      }
+    } catch (error) {
+      console.log('Error_loading', error);
+      return rejectWithValue(error);
+    }
+  },
+);
+export const logoutUser = createAsyncThunk<any>(
+  'user/logoutUser',
+  async (_, {rejectWithValue}) => {
+    try {
+      await removeToken();
+    } catch (error) {
+      console.log('Error_logoutUser', error);
+      return rejectWithValue(error);
+    }
   },
 );

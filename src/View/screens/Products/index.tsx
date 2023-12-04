@@ -1,5 +1,11 @@
 import React, {FC, useEffect} from 'react';
-import {ActivityIndicator, FlatList, SafeAreaView, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Button,
+  FlatList,
+  SafeAreaView,
+  View,
+} from 'react-native';
 import {useContext} from 'react';
 
 import {ThemeContext} from '../../../index';
@@ -10,11 +16,14 @@ import {PrivateStackParamList} from '../../navigation/Private';
 
 import {ProductItem} from '../../components/Products/productItem';
 import {useProducts} from '../../../bus/products';
+import {useUser} from '../../../bus/user';
 
 export const Products: FC<
   PrivateStackParamList & (LightThemeType | DarkThemeType)
 > = () => {
+
   const {theme} = useContext(ThemeContext);
+  const {logout} = useUser();
   const styles = getStyles(theme);
   const {getProductsList, products} = useProducts();
   const {products: productsList, loading} = products;
@@ -22,6 +31,10 @@ export const Products: FC<
   useEffect(() => {
     getProductsList();
   }, []);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <SafeAreaView
@@ -40,6 +53,7 @@ export const Products: FC<
           />
         )}
       </View>
+      <Button title={'Logout'} onPress={handleLogout} />
     </SafeAreaView>
   );
 };

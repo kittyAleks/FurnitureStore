@@ -1,7 +1,7 @@
 import {useDispatch, useSelector} from '../../hooks';
 
 import {User} from './types';
-import {createUser, loginUser} from './thunk/user';
+import {createUser, loadUser, loginUser, logoutUser} from './thunk/user';
 
 export const useUser = () => {
   const dispatch = useDispatch();
@@ -14,6 +14,12 @@ export const useUser = () => {
     },
     signIn: (userData: User) => {
       return dispatch(loginUser(userData));
+    },
+    getUserToken: () => {
+      return dispatch(loadUser());
+    },
+    logout: () => {
+      dispatch(logoutUser());
     },
   };
 };
