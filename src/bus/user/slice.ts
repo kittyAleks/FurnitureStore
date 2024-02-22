@@ -10,7 +10,8 @@ import {createUser, loadUser, loginUser, logoutUser} from './thunk/user';
 
 const initialState = {
   user: null,
-  token: null,
+  accessToken: null,
+  refreshToken: null,
   error: null,
   message: null,
   status: null,
@@ -19,7 +20,15 @@ const initialState = {
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {},
+  reducers: {
+    setAuthToken: (state, action) => {
+      console.log('WWWaction', action);
+      state.accessToken = action.payload;
+    },
+    setRefreshToken: (state, action) => {
+      state.refreshToken = action.payload;
+    },
+  },
   extraReducers: (builder: ActionReducerMapBuilder<types.UserState>) => {
     builder.addCase(createUser.fulfilled, (state, action) => {
       state.message = action.payload.data.message;
@@ -36,8 +45,9 @@ export const userSlice = createSlice({
       },
     );
     builder.addCase(loginUser.fulfilled, (state, action) => {
-      const {token, message} = action.payload.data;
-      state.token = token;
+      const {accessToken, refreshToken, message} = action.payload.data;
+      state.accessToken = accessToken;
+      state.refreshToken = refreshToken;
       state.status = action.payload.status;
       state.error = '';
       state.message = message;
@@ -46,20 +56,23 @@ export const userSlice = createSlice({
       state.error = action.payload.message;
     });
     builder.addCase(loadUser.fulfilled, (state, action) => {
-      state.token = action.payload.token;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
       state.error = null;
     });
     builder.addCase(loadUser.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.message;
-      state.token = null;
+      state.accessToken = null;
+      state.refreshToken = null;
     });
     builder.addCase(logoutUser.fulfilled, (state, action) => {
-      state.token = null;
+      state.accessToken = null;
+      state.refreshToken = null;
       state.error = null;
     });
   },
 });
 
 export const sliceName = userSlice.name;
-export const userActions = userSlice.actions;
+export const {setAuthToken, setRefreshToken} = userSlice.actions;
 export default userSlice.reducer;

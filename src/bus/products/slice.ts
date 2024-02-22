@@ -1,6 +1,6 @@
 import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit';
 
-import {getProducts} from './thunk/products';
+import {getProducts, getProductsById} from './thunk/products';
 import * as types from '../products/types';
 
 const initialState = {
@@ -23,6 +23,8 @@ export const productsSlice = createSlice({
       })
       .addCase(getProducts.rejected, (state, action) => {
         state.loading = false;
+      })
+      .addCase(getProductsById.fulfilled, (state, action) => {
       });
   },
 });

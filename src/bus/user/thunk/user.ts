@@ -8,6 +8,7 @@ import {API_URL} from '@env';
 import * as types from '../types';
 import {removeToken, saveToken} from '../../../storage/userTokenStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {baseService} from '../../../init/axios/baseService';
 
 // Action
 const userAction = createAction<types.UserResponse>('user/user');
@@ -31,10 +32,9 @@ export const createUser = createAsyncThunk<any, any>(
 export const loginUser = createAsyncThunk<any, any>(
   'user/loginUser',
   async (userData, {rejectWithValue}) => {
-    return await axios
+    return await baseService
       .post(`${API_URL}/users/login`, userData)
       .then(res => {
-        saveToken(res.data.token);
         return res;
       })
       .catch(err => {
@@ -50,9 +50,9 @@ export const loadUser = createAsyncThunk<any>(
   'user/loadUser',
   async (_, {rejectWithValue}) => {
     try {
-      const token = await AsyncStorage.getItem('token');
-      if (token) {
-        return {token};
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      if (accessToken) {
+        return {accessToken};
       } else {
         return rejectWithValue({message: 'Token not found'});
       }

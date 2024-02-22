@@ -1,6 +1,8 @@
 const USER = require('../models/Auth');
 const {hashPassword, checkPassword} = require('../utils/passwordUtils');
 const {generateToken} = require('../utils/generateToken');
+const {verifyRefreshToken} = require('../utils/verifyRefreshToken');
+const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
   try {
@@ -36,8 +38,33 @@ const login = async (req, res) => {
         .json({message: 'Wrong password! Please, try again!'});
     }
 
-    const token = generateToken(user);
-    return res.status(200).json({message: 'Login successful!', token});
+    const {accessToken, refreshToken} = generateToken(user);
+    return res
+      .status(200)
+      .json({message: 'Login successful!', accessToken, refreshToken});
+  } catch (error) {
+    console.error('Server error:', error);
+    return res
+      .status(500)
+      .json({message: 'Server error. Please try again later.'});
+  }
+};
+const token = async (req, res) => {
+  try {
+    const {refreshToken} = req.body;
+    if (!refreshToken) {
+      return res.status(401).json({message: 'Refresh Token is required'});
+    }
+    const userData = verifyRefreshToken(refreshToken);
+    if (!userData) {
+      return res.status(403).json({message: 'Invalid refresh token'});
+    }
+    const newAccessToken = jwt.sign(
+      {id: userData._id},
+      process.env.ACCESS_TOKEN_SECRET,
+      {expiresIn: '15m'},
+    );
+    res.json({accessToken: newAccessToken});
   } catch (error) {
     console.error('Server error:', error);
     return res
@@ -46,4 +73,4 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = {register, login};
+module.exports = {register, login, token};

@@ -1,8 +1,17 @@
-import React, {ComponentType, FC, useEffect, useMemo} from 'react';
+import React, {
+  ComponentType,
+  FC,
+  memo,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import {Image, Text, TouchableOpacity, View, Animated} from 'react-native';
 
 import {getStyles} from '../../screens/Products/style';
 import {useNavigation} from '@react-navigation/native';
+import {useProducts} from '../../../bus/products';
+
 type ProductItem = {
   _id: string;
   title?: string;
@@ -19,8 +28,11 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
   const opacity = new Animated.Value(0);
   const styles = useMemo(() => getStyles(theme, opacity), [theme, opacity]);
   const navigation = useNavigation();
+
+  const {getProductsById} = useProducts();
   const goToDetailProduct = () => {
-    navigation.navigate('ProductDetails', {item});
+    getProductsById(item._id);
+    navigation.navigate('ProductDetails');
   };
 
   useEffect(() => {
@@ -32,26 +44,28 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
   }, [opacity]);
 
   return (
-    <Animated.View key={item._id} style={styles.card}>
-      <Image
-        source={require('../../../assets/products/table.png')}
-        style={styles.image}
-      />
-      <View style={styles.infoContainer}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.description}>{item.description}</Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}>
-          <Text style={styles.price}>{item.price}</Text>
-          <TouchableOpacity onPress={goToDetailProduct} style={styles.button}>
-            <Text>➔</Text>
-          </TouchableOpacity>
+    <>
+      <Animated.View key={item._id} style={styles.card}>
+        <Image
+          source={require('../../../assets/products/table.png')}
+          style={styles.image}
+        />
+        <View style={styles.infoContainer}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.description}>{item.description}</Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={styles.price}>{item.price}</Text>
+            <TouchableOpacity onPress={goToDetailProduct} style={styles.button}>
+              <Text>➔</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </Animated.View>
+      </Animated.View>
+    </>
   );
 };

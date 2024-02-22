@@ -13,7 +13,7 @@ export const Navigation: FC = () => {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetchToken(setToken, setLoading, getUserToken);
-  }, []);
+  }, [getUserToken, setLoading, setToken]);
 
   if (loading) {
     return (

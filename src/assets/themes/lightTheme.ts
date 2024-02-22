@@ -9,6 +9,7 @@ export const LightTheme = {
   },
   primaryText: '#304164', // Темно-серый
   secondaryText: '#666666', // Серый
+  threeText: '#FFFFFF', // Белый
   accent: '#007AFF', // Ярко-синий
   border: '#E0E0E0', // Светло-серый
   elementBackground: '#F0F0F0', // Очень светло-серый

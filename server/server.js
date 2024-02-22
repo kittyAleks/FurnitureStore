@@ -1,4 +1,6 @@
 const express = require('express');
+require('dotenv').config();
+
 const app = express();
 const mongoose = require('mongoose');
 const Routes = require('./routes/authRoutes');
@@ -12,6 +14,7 @@ app.use(express.json()); // Middleware для парсинга JSON.
 
 app.use('/users', Routes);
 app.use('/products', ProductRoutes);
+// app.use('/products/:productId', ProductRoutes);
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');

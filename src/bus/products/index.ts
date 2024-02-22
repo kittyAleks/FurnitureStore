@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from '../../hooks';
 
-import {getProducts} from './thunk/products';
+import {getProducts, getProductsById} from './thunk/products';
 
 export const useProducts = () => {
   const dispatch = useDispatch();
@@ -9,5 +9,6 @@ export const useProducts = () => {
   return {
     products,
     getProductsList: () => dispatch(getProducts()),
+    getProductsById: (id: string) => dispatch(getProductsById(id)),
   };
 };

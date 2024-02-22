@@ -1,5 +1,4 @@
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {Products} from '../screens';
 
 export type PublicStackParamList = {
   Register: Object | undefined;

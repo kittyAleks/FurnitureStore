@@ -21,6 +21,7 @@ export const Root: FC = () => {
   const deviceTheme = Appearance.getColorScheme() as ColorSchemeName;
 
   const [theme, setTheme] = useState(LightTheme);
+
   useEffect(() => {
     setTheme(deviceTheme === 'dark' ? DarkTheme : LightTheme);
     const themeChangeHandler = handleAppStateChange(setTheme);

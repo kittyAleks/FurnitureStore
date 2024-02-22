@@ -1,13 +1,22 @@
 const jwt = require('jsonwebtoken');
 
 const generateToken = user => {
-  return jwt.sign(
+  const accessToken = jwt.sign(
     {
       id: user._id,
       email: user.email,
     },
-    'secret',
-    {expiresIn: '1h'},
+    process.env.ACCESS_TOKEN_SECRET,
+    {expiresIn: '15m'},
   );
+  const refreshToken = jwt.sign(
+    {
+      id: user._id,
+      email: user.email,
+    },
+    process.env.REFRESH_TOKEN_SECRET,
+    {expiresIn: '7d'},
+  );
+  return {accessToken, refreshToken};
 };
 module.exports = {generateToken};

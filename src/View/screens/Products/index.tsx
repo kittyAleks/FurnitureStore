@@ -1,4 +1,4 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useCallback, useEffect} from 'react';
 import {
   ActivityIndicator,
   Button,
@@ -27,13 +27,17 @@ export const Products: FC<
   const {getProductsList, products} = useProducts();
   const {products: productsList, loading} = products;
 
-  useEffect(() => {
-    getProductsList();
-  }, []);
-
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     getProductsList();
+  //   }, []),
+  // );
   const handleLogout = () => {
     logout();
   };
+  useEffect(() => {
+    getProductsList();
+  }, []);
 
   return (
     <SafeAreaView

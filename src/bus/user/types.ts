@@ -6,7 +6,8 @@ export type User = {
 
 export type UserState = {
   user: User | null;
-  token: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
   error: string | null;
   message: string | null;
   status: number | null;

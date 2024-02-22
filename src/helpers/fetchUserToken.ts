@@ -3,6 +3,7 @@ type FetchUserToken = (
   setLoading: any,
   getUserToken: any,
 ) => void;
+
 export const fetchToken: FetchUserToken = async (
   setToken,
   setLoading,
@@ -10,7 +11,7 @@ export const fetchToken: FetchUserToken = async (
 ) => {
   try {
     let userToken = await getUserToken();
-    const token = userToken.payload?.token || null;
+    const token = userToken.payload?.accessToken || null;
     setToken(token);
   } catch (error) {
     console.error('Token_error', error);

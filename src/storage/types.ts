@@ -1,1 +1,4 @@
-export type UserTokenT = string;
+export type TokenT = {
+  accessToken: string;
+  refreshToken: string;
+};

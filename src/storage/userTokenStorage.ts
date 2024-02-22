@@ -1,9 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {UserTokenT} from './types';
+import {TokenT} from './types';
 
-export const saveToken = async (token: UserTokenT) => {
+export const saveToken = async ({accessToken, refreshToken}: TokenT) => {
   try {
-    await AsyncStorage.setItem('token', token);
+    await AsyncStorage.setItem('accessToken', accessToken);
+    await AsyncStorage.setItem('refreshToken', refreshToken);
   } catch (error) {
     console.error('Error saving token for user', error);
   }
@@ -11,9 +12,10 @@ export const saveToken = async (token: UserTokenT) => {
 
 export const getToken = async () => {
   try {
-    const token = await AsyncStorage.getItem('token');
-    if (token) {
-      return token;
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const refreshToken = await AsyncStorage.getItem('refreshToken');
+    if (accessToken && refreshToken) {
+      return {accessToken, refreshToken};
     }
   } catch (error) {
     console.error(error);
@@ -21,7 +23,8 @@ export const getToken = async () => {
 };
 export const removeToken = async () => {
   try {
-    await AsyncStorage.removeItem('token');
+    await AsyncStorage.removeItem('accessToken');
+    await AsyncStorage.removeItem('refreshToken');
   } catch (error) {
     console.error(error);
   }
