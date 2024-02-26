@@ -1,5 +1,4 @@
 // Core
-import axios from 'axios';
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
 
 // API
@@ -7,12 +6,13 @@ import {API_URL} from '@env';
 
 // Types
 import * as types from '../types';
+import {baseService} from '../../../init/axios/baseService';
 
 // Action
 const productsAction = createAction<types.ProductsState>('products/products');
 
 export const getProducts = createAsyncThunk(productsAction.type, async () => {
-  const axiosResponse = await axios.get(`${API_URL}/products`);
+  const axiosResponse = await baseService.get(`${API_URL}/products`);
   return axiosResponse.data;
 });
 
@@ -21,7 +21,7 @@ export const getProductsById = createAsyncThunk<any, string>(
   async (id, {rejectWithValue}) => {
     console.log('getProductsById', `${API_URL}/products/${id}`);
     try {
-      const axiosResponse = await axios.get(`${API_URL}/products/${id}`);
+      const axiosResponse = await baseService.get(`${API_URL}/products/${id}`);
       return axiosResponse.data;
     } catch (error) {
       return rejectWithValue(error);

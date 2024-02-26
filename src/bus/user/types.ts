@@ -11,6 +11,7 @@ export type UserState = {
   error: string | null;
   message: string | null;
   status: number | null;
+  isAuth: boolean;
 };
 
 interface AxiosResponseData {

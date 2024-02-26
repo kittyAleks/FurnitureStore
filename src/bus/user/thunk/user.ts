@@ -1,9 +1,5 @@
 // Core
-import axios from 'axios';
 import {createAction, createAsyncThunk} from '@reduxjs/toolkit';
-
-// API
-import {API_URL} from '@env';
 
 import * as types from '../types';
 import {removeToken, saveToken} from '../../../storage/userTokenStorage';
@@ -17,7 +13,7 @@ export const createUser = createAsyncThunk<any, any>(
   userAction.type,
   async (userData, {rejectWithValue}) => {
     try {
-      const response = await axios.post(`${API_URL}/users/register`, userData);
+      const response = await baseService.post('/users/register', userData);
       return response;
     } catch (err: any) {
       if (err.response) {
@@ -33,8 +29,12 @@ export const loginUser = createAsyncThunk<any, any>(
   'user/loginUser',
   async (userData, {rejectWithValue}) => {
     return await baseService
-      .post(`${API_URL}/users/login`, userData)
+      .post('/users/login', userData)
       .then(res => {
+        saveToken({
+          accessToken: res.data.accessToken,
+          refreshToken: res.data.refreshToken,
+        });
         return res;
       })
       .catch(err => {
@@ -51,8 +51,9 @@ export const loadUser = createAsyncThunk<any>(
   async (_, {rejectWithValue}) => {
     try {
       const accessToken = await AsyncStorage.getItem('accessToken');
-      if (accessToken) {
-        return {accessToken};
+      const refreshToken = await AsyncStorage.getItem('refreshToken');
+      if (accessToken && refreshToken) {
+        return {accessToken, refreshToken};
       } else {
         return rejectWithValue({message: 'Token not found'});
       }

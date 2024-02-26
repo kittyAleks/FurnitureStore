@@ -15,19 +15,20 @@ const initialState = {
   error: null,
   message: null,
   status: null,
+  isAuth: false,
 };
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setAuthToken: (state, action) => {
-      console.log('WWWaction', action);
+    setAccessToken: (state, action) => {
       state.accessToken = action.payload;
     },
-    setRefreshToken: (state, action) => {
-      state.refreshToken = action.payload;
-    },
+    // setRefreshToken: (state, action) => {
+    //   console.log('Обновление refreshToken', action.payload);
+    //   state.refreshToken = action.payload;
+    // },
   },
   extraReducers: (builder: ActionReducerMapBuilder<types.UserState>) => {
     builder.addCase(createUser.fulfilled, (state, action) => {
@@ -39,9 +40,9 @@ export const userSlice = createSlice({
     builder.addCase(
       createUser.rejected,
       (state, action: PayloadAction<any>) => {
-        const {message} = action.payload.data;
-        state.error = message;
+        state.message = action.payload?.data?.message;
         state.status = action.payload.status;
+        state.isAuth = false;
       },
     );
     builder.addCase(loginUser.fulfilled, (state, action) => {
@@ -51,28 +52,33 @@ export const userSlice = createSlice({
       state.status = action.payload.status;
       state.error = '';
       state.message = message;
+      state.isAuth = true;
     });
     builder.addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.message;
+      state.isAuth = false;
     });
     builder.addCase(loadUser.fulfilled, (state, action) => {
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.error = null;
+      state.isAuth = true;
     });
     builder.addCase(loadUser.rejected, (state, action: PayloadAction<any>) => {
       state.error = action.payload.message;
       state.accessToken = null;
       state.refreshToken = null;
+      state.isAuth = false;
     });
     builder.addCase(logoutUser.fulfilled, (state, action) => {
       state.accessToken = null;
       state.refreshToken = null;
       state.error = null;
+      state.isAuth = false;
     });
   },
 });
 
 export const sliceName = userSlice.name;
-export const {setAuthToken, setRefreshToken} = userSlice.actions;
+export const {setAccessToken} = userSlice.actions;
 export default userSlice.reducer;

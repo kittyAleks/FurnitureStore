@@ -8,7 +8,10 @@ import {ActivityIndicator} from 'react-native';
 import {fetchToken} from '../../helpers/fetchUserToken';
 
 export const Navigation: FC = () => {
-  const {getUserToken} = useUser();
+  const {
+    getUserToken,
+    user: {isAuth},
+  } = useUser();
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -23,7 +26,7 @@ export const Navigation: FC = () => {
 
   return (
     <NavigationContainer>
-      {token ? <Private /> : <Public />}
+      {isAuth ? <Private /> : <Public />}
     </NavigationContainer>
   );
 };
