@@ -1,16 +1,13 @@
-import React, {
-  ComponentType,
-  FC,
-  memo,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, {FC, useEffect, useMemo} from 'react';
 import {Image, Text, TouchableOpacity, View, Animated} from 'react-native';
 
 import {getStyles} from '../../screens/Products/style';
 import {useNavigation} from '@react-navigation/native';
-import {useProducts} from '../../../bus/products';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {
+  PrivateStackParamList,
+  ProductItemNavigationProp,
+} from '../../navigation/types';
 
 type ProductItem = {
   _id: string;
@@ -27,12 +24,12 @@ type ProductItemType = {
 export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
   const opacity = new Animated.Value(0);
   const styles = useMemo(() => getStyles(theme, opacity), [theme, opacity]);
-  const navigation = useNavigation();
+  const navigation = useNavigation<ProductItemNavigationProp>();
 
-  const {getProductsById} = useProducts();
+  // const {getProductsById} = useProducts();
   const goToDetailProduct = () => {
-    getProductsById(item._id);
-    navigation.navigate('ProductDetails');
+    // getProductsById(item._id);
+    navigation.navigate('ProductDetails', {item: item});
   };
 
   useEffect(() => {

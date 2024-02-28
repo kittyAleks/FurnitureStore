@@ -24,8 +24,8 @@ const refreshAccessToken = async (error: any) => {
 
     await AsyncStorage.setItem('accessToken', accessToken); // Обновляем accessToken в хранилище
     store.dispatch(setAccessToken(accessToken)); // Обновляем accessToken в Redux store
-    error.config.headers.Authorization = accessToken;
-    baseService.defaults.headers.common.Authorization = accessToken;
+    error.config.headers.Authorization = `Bearer ${accessToken}`;
+    baseService.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
 
     return Promise.resolve(accessToken);
   } catch (refreshError) {
@@ -40,7 +40,7 @@ baseService.interceptors.request.use(async config => {
     if (res) {
       const {accessToken} = res;
       if (accessToken) {
-        config.headers.Authorization = accessToken;
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
     } else {
       console.log('No token');

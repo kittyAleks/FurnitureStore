@@ -17,6 +17,8 @@ export const getStyles = (theme: any) => {
       textAlign: 'center',
       fontSize: 30,
     },
+
+    // ProductDetails
     indicatorContainer: {
       position: 'absolute',
       flexDirection: 'row',
@@ -34,6 +36,7 @@ export const getStyles = (theme: any) => {
       backgroundColor: '#404F4C',
     },
     buttonCart: {
+      marginTop: 100,
       width: '100%',
       paddingHorizontal: 20,
       paddingVertical: 15,

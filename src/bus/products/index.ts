@@ -9,6 +9,6 @@ export const useProducts = () => {
   return {
     products,
     getProductsList: () => dispatch(getProducts()),
-    getProductsById: (id: string) => dispatch(getProductsById(id)),
+    // getProductsById: (id: string) => dispatch(getProductsById(id)),
   };
 };

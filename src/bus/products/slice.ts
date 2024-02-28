@@ -23,9 +23,9 @@ export const productsSlice = createSlice({
       })
       .addCase(getProducts.rejected, (state, action) => {
         state.loading = false;
-      })
-      .addCase(getProductsById.fulfilled, (state, action) => {
       });
+    // .addCase(getProductsById.fulfilled, (state, action) => {
+    // });
   },
 });
 

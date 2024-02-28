@@ -6,4 +6,5 @@ export enum Book {
   // Private
   Products = 'ProductsMain',
   ProductDetails = 'ProductDetails',
+  Liked = 'Liked',
 }

@@ -1,4 +1,11 @@
-import React, {useContext, useRef, useState} from 'react';
+import React, {
+  FC,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 import {
   Text,
   View,
@@ -8,28 +15,64 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+
 import {ThemeContext} from '../../../../index';
 import {getStyles} from '../style';
+import {ProductDetailsRouteProp} from '../../../navigation/types';
+import {useNavigation} from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {baseService} from '../../../../init/axios/baseService';
 
-export const ProductDetails = () => {
+type ProductDetailsProps = {
+  route: ProductDetailsRouteProp;
+};
+const {height} = Dimensions.get('window');
+
+export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
+  const navigation = useNavigation();
+  const [liked, setLiked] = useState(false);
+
+  useLayoutEffect(() => {
+    const parent = navigation.getParent();
+    if (parent) {
+      parent.setOptions({
+        tabBarStyle: {
+          display: route.name === 'ProductDetails' ? 'none' : 'flex',
+        },
+      });
+    }
+    return () => parent?.setOptions({tabBarStyle: {display: 'flex'}});
+  }, [navigation, route]);
+
+  const {item} = route.params;
+  console.log('УУУitem', item);
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [visible, setVisible] = useState(true);
   const [colorCircle, setColorCircle] = useState([
     {
       color: '#000000',
       id: 1,
+      borderColor: '#000000',
+      borderWidth: 2,
     },
     {
       color: '#8E8E8E',
       id: 2,
+      borderColor: '#8E8E8E',
+      borderWidth: 2,
     },
     {
+      borderWidth: 2,
       color: '#A9907E',
       id: 3,
+      borderColor: '#A9907E',
     },
     {
+      borderWidth: 2,
+      borderColor: '#404F4C',
       color: '#404F4C',
       id: 4,
     },
@@ -37,6 +80,24 @@ export const ProductDetails = () => {
 
   const flatListRef = useRef(null);
   const translateY = new Animated.Value(0);
+
+  useLayoutEffect(() => {
+    AsyncStorage.getItem('liked').then(res => {
+      if (res) {
+        setLiked(JSON.parse(res));
+      }
+    });
+  }, [liked]);
+  // useEffect(() => {
+  const likedProducts = async (productId: string) => {
+    if (!liked) {
+      console.log('productId_true');
+      const response = await baseService.post(`users/liked/${productId}`);
+    } else {
+      console.log('productId_false');
+      const response = await baseService.delete(`users/unliked/${productId}`);
+    }
+  };
 
   const showModal = () => {
     Animated.timing(translateY, {
@@ -64,7 +125,7 @@ export const ProductDetails = () => {
       <Text style={styles.text}>{item}</Text>
     </View>
   );
-  const renderIndicator = index => {
+  const renderIndicator = (index: number) => {
     return (
       <TouchableOpacity
         key={index}
@@ -78,15 +139,22 @@ export const ProductDetails = () => {
     );
   };
   const setColor = (element: any) => {
-    const newColor = colorCircle.map(item => {
-      if (item.id === element.id) {
+    setColorCircle(
+      colorCircle.map(item => {
+        if (item.id === element.id) {
+          return {
+            ...item,
+            borderWidth: 3,
+            borderColor: item.color,
+          };
+        }
         return {
           ...item,
-          color: '#000000',
+          borderWidth: 0,
+          borderColor: 'transparent',
         };
-      }
-    });
-    setColorCircle(newColor);
+      }),
+    );
   };
 
   return (
@@ -113,7 +181,7 @@ export const ProductDetails = () => {
           <Text>Show Modal</Text>
         </TouchableOpacity>
 
-        <Animated.View
+        <Animated.ScrollView
           style={{
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
@@ -122,14 +190,15 @@ export const ProductDetails = () => {
             transform: [{translateY}],
             position: 'absolute',
             bottom: 0,
-            height: Dimensions.get('window').height / 3 + 50,
-            borderWidth: 1,
+            top: 50,
+            height: height / 2,
           }}>
           <TouchableOpacity
             style={{
               height: '100%',
               paddingHorizontal: 25,
               paddingTop: 25,
+              marginBottom: 100,
             }}
             onPress={hideModal}>
             <View style={{flexDirection: 'row'}}>
@@ -137,8 +206,31 @@ export const ProductDetails = () => {
               <Text>Hide Modal</Text>
             </View>
             <View style={{flexDirection: 'column'}}>
-              <Text style={{fontSize: 24}}>Table and chair set</Text>
-              <View style={{flexDirection: 'row'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}>
+                <Text style={{fontSize: 24}}>{item.title}</Text>
+                <TouchableOpacity
+                  style={{paddingLeft: 40}}
+                  onPress={() => {
+                    AsyncStorage.setItem('liked', JSON.stringify(!liked));
+                    setLiked(prev => !prev);
+                    likedProducts(item._id);
+                  }}>
+                  <Ionicons
+                    name={liked ? 'heart' : 'heart-outline'}
+                    size={25}
+                    color={'red'}
+                  />
+                </TouchableOpacity>
+                <Text style={{fontSize: 24, color: 'green'}}>
+                  $ {item.price}
+                </Text>
+              </View>
+              <View style={{flexDirection: 'row', marginVertical: 10}}>
                 {colorCircle.map(item => {
                   return (
                     <TouchableOpacity
@@ -147,25 +239,35 @@ export const ProductDetails = () => {
                         setColor(item);
                       }}
                       style={{
+                        margin: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
                         width: 30,
                         height: 30,
                         borderRadius: 15,
                         backgroundColor: item.color,
-                      }}
-                    />
+                      }}>
+                      <View
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 20,
+                          borderColor: item.borderColor,
+                          borderWidth: item.borderWidth,
+                        }}
+                      />
+                    </TouchableOpacity>
                   );
                 })}
               </View>
-              <Text>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </Text>
+
+              <Text>{item.description}</Text>
             </View>
             <TouchableOpacity style={styles.buttonCart}>
               <Text style={styles.buttonTextCart}>Add to cart</Text>
             </TouchableOpacity>
           </TouchableOpacity>
-        </Animated.View>
+        </Animated.ScrollView>
       </View>
     </SafeAreaView>
   );

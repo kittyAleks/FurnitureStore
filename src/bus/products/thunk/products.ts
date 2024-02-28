@@ -13,18 +13,18 @@ const productsAction = createAction<types.ProductsState>('products/products');
 
 export const getProducts = createAsyncThunk(productsAction.type, async () => {
   const axiosResponse = await baseService.get(`${API_URL}/products`);
+  console.log('axiosResponse', axiosResponse);
   return axiosResponse.data;
 });
 
-export const getProductsById = createAsyncThunk<any, string>(
-  'products/productId',
-  async (id, {rejectWithValue}) => {
-    console.log('getProductsById', `${API_URL}/products/${id}`);
-    try {
-      const axiosResponse = await baseService.get(`${API_URL}/products/${id}`);
-      return axiosResponse.data;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
-  },
-);
+// export const getProductsById = createAsyncThunk<any, string>(
+//   'products/productId',
+//   async (id, {rejectWithValue}) => {
+//     try {
+//       const axiosResponse = await baseService.get(`${API_URL}/products/${id}`);
+//       return axiosResponse.data;
+//     } catch (error) {
+//       return rejectWithValue(error);
+//     }
+//   },
+// );
