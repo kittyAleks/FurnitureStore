@@ -6,7 +6,7 @@ import {store} from './init';
 import {Navigation} from './View/navigation';
 import {DarkTheme} from './assets/themes/darkTheme';
 import {LightTheme} from './assets/themes/lightTheme';
-import {handleAppStateChange} from './helpers/handleAppStateChange';
+import {handleAppStateChange} from './tools/helpers/handleAppStateChange';
 
 export type ThemeContextType = {
   theme: typeof LightTheme | typeof DarkTheme;

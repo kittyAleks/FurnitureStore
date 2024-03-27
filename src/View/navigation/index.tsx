@@ -1,18 +1,19 @@
 import React, {FC, useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import {ActivityIndicator} from 'react-native';
 
 import {Public} from './Public';
 import {Private} from './Private';
 import {useUser} from '../../bus/user';
-import {ActivityIndicator} from 'react-native';
-import {fetchToken} from '../../helpers/fetchUserToken';
+import {fetchToken} from '../../tools/helpers/fetchUserToken';
 
 export const Navigation: FC = () => {
   const {
     getUserToken,
     user: {isAuth},
   } = useUser();
-  const [token, setToken] = useState(null);
+  const [setToken] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     fetchToken(setToken, setLoading, getUserToken);
@@ -25,8 +26,10 @@ export const Navigation: FC = () => {
   }
 
   return (
-    <NavigationContainer>
-      {isAuth ? <Private /> : <Public />}
-    </NavigationContainer>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        {isAuth ? <Private /> : <Public />}
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 };

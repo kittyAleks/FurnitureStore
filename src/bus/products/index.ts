@@ -1,6 +1,6 @@
-import {useDispatch, useSelector} from '../../hooks';
+import {useDispatch, useSelector} from '../../tools/hooks';
 
-import {getProducts, getProductsById} from './thunk/products';
+import {getProducts} from './thunk/products';
 
 export const useProducts = () => {
   const dispatch = useDispatch();

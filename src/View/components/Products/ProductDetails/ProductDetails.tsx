@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, {FC, useContext, useEffect, useRef, useState} from 'react';
 import {
   Text,
   View,
@@ -16,14 +9,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-import {ThemeContext} from '../../../../index';
-import {getStyles} from '../style';
-import {ProductDetailsRouteProp} from '../../../navigation/types';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import {baseService} from '../../../../init/axios/baseService';
+
+import {ThemeContext} from '../../../../index';
+import {getStyles} from '../style';
+import {ProductDetailsRouteProp} from '../../../navigation/types';
+import {useLikedProduct} from '../../../../bus/likedProduct';
 
 type ProductDetailsProps = {
   route: ProductDetailsRouteProp;
@@ -31,23 +24,10 @@ type ProductDetailsProps = {
 const {height} = Dimensions.get('window');
 
 export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
-  const navigation = useNavigation();
   const [liked, setLiked] = useState(false);
-
-  useLayoutEffect(() => {
-    const parent = navigation.getParent();
-    if (parent) {
-      parent.setOptions({
-        tabBarStyle: {
-          display: route.name === 'ProductDetails' ? 'none' : 'flex',
-        },
-      });
-    }
-    return () => parent?.setOptions({tabBarStyle: {display: 'flex'}});
-  }, [navigation, route]);
+  const {likedProduct, unLikedProduct} = useLikedProduct();
 
   const {item} = route.params;
-  console.log('УУУitem', item);
   const {theme} = useContext(ThemeContext);
   const styles = getStyles(theme);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -81,22 +61,22 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
   const flatListRef = useRef(null);
   const translateY = new Animated.Value(0);
 
-  useLayoutEffect(() => {
-    AsyncStorage.getItem('liked').then(res => {
-      if (res) {
+  useEffect(() => {
+    const fetchLikedStatus = async () => {
+      const res = await AsyncStorage.getItem('liked');
+      if (res !== null) {
         setLiked(JSON.parse(res));
       }
-    });
-  }, [liked]);
-  // useEffect(() => {
-  const likedProducts = async (productId: string) => {
-    if (!liked) {
-      console.log('productId_true');
-      const response = await baseService.post(`users/liked/${productId}`);
-    } else {
-      console.log('productId_false');
-      const response = await baseService.delete(`users/unliked/${productId}`);
-    }
+    };
+
+    fetchLikedStatus();
+  }, []);
+
+  const likeProductById = (id: string) => {
+    likedProduct(id);
+  };
+  const unlikeProductById = (id: string) => {
+    unLikedProduct(id);
   };
 
   const showModal = () => {
@@ -215,10 +195,19 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
                 <Text style={{fontSize: 24}}>{item.title}</Text>
                 <TouchableOpacity
                   style={{paddingLeft: 40}}
-                  onPress={() => {
-                    AsyncStorage.setItem('liked', JSON.stringify(!liked));
-                    setLiked(prev => !prev);
-                    likedProducts(item._id);
+                  onPress={async () => {
+                    const newLikedStatus = !liked;
+                    await AsyncStorage.setItem(
+                      'liked',
+                      JSON.stringify(newLikedStatus),
+                    );
+                    setLiked(newLikedStatus);
+                    const productId = item._id.toString();
+                    if (newLikedStatus) {
+                      likeProductById(productId);
+                    } else {
+                      unlikeProductById(productId);
+                    }
                   }}>
                   <Ionicons
                     name={liked ? 'heart' : 'heart-outline'}

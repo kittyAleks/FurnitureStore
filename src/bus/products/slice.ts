@@ -1,6 +1,6 @@
 import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit';
 
-import {getProducts, getProductsById} from './thunk/products';
+import {getProducts} from './thunk/products';
 import * as types from '../products/types';
 
 const initialState = {

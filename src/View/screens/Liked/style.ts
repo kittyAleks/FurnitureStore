@@ -4,8 +4,7 @@ export const getStyles = (theme: any) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      flexDirection: 'column',
-      borderWidth: 1,
+      borderWidth: 2,
       alignItems: 'center',
       paddingHorizontal: 25,
     },
