@@ -178,7 +178,7 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
               height: '100%',
               paddingHorizontal: 25,
               paddingTop: 25,
-              marginBottom: 100,
+              marginBottom: 180,
             }}
             onPress={hideModal}>
             <View style={{flexDirection: 'row'}}>

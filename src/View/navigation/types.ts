@@ -33,7 +33,7 @@ export type PrivateStackParamList = {
   Products: undefined;
   ProductDetails: {item: ProductItem};
   ProductsMain: undefined;
-  Cart: undefined;
+  LikedCart: undefined;
   cardStyleInterpolator: undefined;
 };
 export type PrivateStackScreenProps = NativeStackScreenProps<

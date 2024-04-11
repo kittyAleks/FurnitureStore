@@ -1,6 +1,7 @@
 import React, {FC, useMemo} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import Animated, {
+  interpolateColor,
   useAnimatedStyle,
   useSharedValue,
   withSequence,
@@ -25,24 +26,27 @@ type ProductItemType = {
 };
 
 export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
-  const opacity = useSharedValue(1);
   const styles = useMemo(() => getStyles(theme), [theme]);
   const navigation = useNavigation<ProductItemNavigationProp>();
   const scale = useSharedValue(1);
   const backgroundColor = useSharedValue('#FFF2F6AF');
+  const progress = useSharedValue(0);
 
   const itemStyle = useAnimatedStyle(() => {
+    const backgroundColor = interpolateColor(
+      progress.value,
+      [0, 1],
+      ['#FFFFFF', '#e0c193'],
+    );
     return {
       transform: [{scale: scale.value}],
-      backgroundColor: backgroundColor.value,
+      backgroundColor,
     };
   });
 
-  // const {getProductsById} = useProducts();
   const goToDetailProduct = () => {
-    // getProductsById(item._id);
-    backgroundColor.value = withTiming('tomato', {duration: 100}, () => {
-      backgroundColor.value = withSpring('#FFF2F6AF');
+    progress.value = withTiming(1, {duration: 100}, () => {
+      progress.value = withSpring(0, {damping: 2});
       scale.value = withSequence(
         withTiming(0.8, {duration: 100}),
         withTiming(1.0, {duration: 100}),
@@ -57,7 +61,7 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
     <TouchableOpacity onPress={goToDetailProduct}>
       <Animated.View
         key={item._id}
-        style={[itemStyle, styles.card, {backgroundColor, opacity}]}>
+        style={[itemStyle, styles.card, backgroundColor]}>
         <Image
           source={require('../../../assets/products/table.png')}
           style={styles.image}
@@ -72,9 +76,6 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
               justifyContent: 'space-between',
             }}>
             <Text style={styles.price}>{item.price}</Text>
-            <TouchableOpacity style={styles.button}>
-              <Text>➔</Text>
-            </TouchableOpacity>
           </View>
         </View>
       </Animated.View>

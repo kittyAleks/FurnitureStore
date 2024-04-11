@@ -50,5 +50,34 @@ export const getStyles = (theme: any) => {
       fontSize: 18,
       fontWeight: '700',
     },
+    // LikedProductCard
+    card: {
+      backgroundColor: '#fff',
+      borderRadius: 8,
+      overflow: 'hidden',
+      elevation: 3, // for Android
+      shadowOffset: {width: 1, height: 1}, // for iOS
+      shadowColor: '#333',
+      shadowOpacity: 0.3,
+      shadowRadius: 2,
+      marginVertical: 10,
+      marginHorizontal: 20,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    image: {
+      width: '100%',
+      height: 150,
+    },
+    title: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      marginVertical: 10,
+    },
+    price: {
+      fontSize: 14,
+      marginBottom: 10,
+    },
   });
 };

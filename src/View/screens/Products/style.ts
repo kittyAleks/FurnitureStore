@@ -12,6 +12,14 @@ export const getStyles = (theme: any) => {
       width: '100%',
       padding: 10,
       borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 2,
+      elevation: 5,
     },
     image: {
       width: 100,
@@ -46,6 +54,49 @@ export const getStyles = (theme: any) => {
     },
     separator: {
       height: 10,
+    },
+    // LikedProducts
+    likedCard: {
+      alignItems: 'center',
+      backgroundColor: '#fff',
+      borderRadius: 10,
+      marginVertical: 8,
+      marginHorizontal: 16,
+      shadowColor: '#000',
+      shadowOffset: {width: 0, height: 2},
+      shadowOpacity: 0.23,
+      shadowRadius: 2.62,
+      elevation: 4,
+    },
+    likedImage: {
+      width: 165,
+      height: 148,
+      backgroundColor: '#f0f0f0',
+      borderTopLeftRadius: 10,
+      borderTopRightRadius: 10,
+    },
+    likedInfoContainer: {
+      flex: 1,
+      width: '100%',
+      height: 72,
+      padding: 12,
+      borderBottomLeftRadius: 10,
+      borderBottomRightRadius: 10,
+    },
+    likedTitle: {
+      fontWeight: 'bold',
+      fontSize: 18,
+      color: '#333',
+    },
+    likedPrice: {
+      fontSize: 16,
+      color: '#666',
+      marginTop: 4,
+    },
+    heartIcon: {
+      position: 'absolute',
+      right: 10,
+      top: 10,
     },
   });
 };

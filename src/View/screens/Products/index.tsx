@@ -63,10 +63,6 @@ export const Products: FC<
       Extrapolation.CLAMP,
     ),
   }));
-  const animatedTextStyle = useAnimatedStyle(() => ({
-    transform: [{translateX: translateX.value}],
-  }));
-
   useEffect(() => {
     height.value = withRepeat(withTiming(HEADER_HEIGHT, {duration: 1500}));
   }, []);
@@ -92,7 +88,6 @@ export const Products: FC<
         ]}>
         <Animated.Text
           style={[
-            animatedTextStyle,
             {
               fontSize: 20,
               fontWeight: '700',
@@ -103,6 +98,7 @@ export const Products: FC<
           My products
         </Animated.Text>
       </Animated.View>
+
       <View style={styles.container}>
         {loading ? (
           <ActivityIndicator size={'large'} />
@@ -116,7 +112,6 @@ export const Products: FC<
           />
         )}
       </View>
-
       <Button title={'Logout'} onPress={handleLogout} />
     </>
   );

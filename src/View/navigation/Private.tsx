@@ -1,8 +1,6 @@
 import React, {FC, useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {View, Text} from 'react-native';
 
 import {Book} from './book';
@@ -11,7 +9,7 @@ import {Products} from '../screens';
 import {PrivateStackParamList} from './types';
 import {ProductDetails} from '../components/Products/ProductDetails/ProductDetails';
 import {Liked} from '../screens/Liked/Liked';
-import CustomHeader from '../components/CustomHeader/CustomHeader';
+import CustomTabBar from './CustomTabBar/CustomTabBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -42,53 +40,22 @@ const ProductsStackNavigator = () => {
 };
 
 export const Private: FC = () => {
-  const {theme} = useContext(ThemeContext);
-  console.log(theme);
-
   return (
-    <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
-          let iconName;
-
-          if (route.name === 'Products') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Liked') {
-            iconName = focused ? 'heart' : 'heart-outline';
-          } else if (route.name === 'Cart') {
-            iconName = focused ? 'cart' : 'cart-outline';
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
-        tabBarStyle: {
-          backgroundColor: theme.background.one,
-        },
-      })}>
+    <Tab.Navigator tabBar={props => <CustomTabBar {...props} />}>
       <Tab.Screen
-        name={'Products'}
+        name="Products"
         component={ProductsStackNavigator}
-        options={{headerShown: false}}
+        options={{headerShown: false, title: 'Products'}}
       />
       <Tab.Screen
-        name={'Cart'}
+        name="Cart"
         component={CartScreen}
-        options={({navigation, route}) => ({
-          header: () => (
-            <CustomHeader title={route.name} navigation={navigation} />
-          ),
-        })}
+        options={{title: 'Cart'}}
       />
       <Tab.Screen
-        name={Book.Liked}
+        name="Liked"
         component={Liked}
-        options={({navigation, route}) => ({
-          header: () => (
-            <CustomHeader title={route.name} navigation={navigation} />
-          ),
-        })}
+        options={{title: 'Liked', headerShown: false}}
       />
     </Tab.Navigator>
   );
