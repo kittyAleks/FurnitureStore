@@ -32,6 +32,7 @@ export const Products: FC<
   const {logout} = useUser();
   const styles = getStyles(theme);
   const {getProductsList, products} = useProducts();
+  console.log('ЦЦproducts', products);
   const {products: productsList, loading} = products;
 
   const height = useSharedValue(HEADER_HEIGHT);
@@ -80,7 +81,7 @@ export const Products: FC<
         style={[
           animatedHeightStyle,
           {
-            backgroundColor: 'orange',
+            backgroundColor: '#4A90E2',
             justifyContent: 'center',
             height: HEADER_HEIGHT,
             opacity,
@@ -93,6 +94,7 @@ export const Products: FC<
               fontWeight: '700',
               paddingTop: insets.top,
               paddingBottom: 30,
+              color: '#FFFFFF',
             },
           ]}>
           My products

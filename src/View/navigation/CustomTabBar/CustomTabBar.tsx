@@ -20,7 +20,7 @@ const IconComponent = ({routeName, isFocused}) => {
       backgroundColor: interpolateColor(
         color.value,
         [0, 1],
-        ['transparent', '#e0c193'],
+        ['transparent', '#B0BEC5'],
       ),
     };
   });
@@ -44,7 +44,7 @@ const IconComponent = ({routeName, isFocused}) => {
       break;
   }
 
-  const textColor = isFocused ? 'white' : 'gray';
+  const textColor = isFocused ? '#4A90E2' : '#B0BEC5';
 
   return (
     <Animated.View

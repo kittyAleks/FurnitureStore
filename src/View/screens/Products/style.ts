@@ -34,15 +34,16 @@ export const getStyles = (theme: any) => {
     title: {
       fontSize: 16,
       fontWeight: 'bold',
+      color: '#333333',
     },
     description: {
       fontSize: 14,
-      color: '#666',
+      color: '#757575',
     },
     price: {
       fontSize: 16,
       fontWeight: 'bold',
-      color: '#28A745', // или другой цвет из вашей палитры
+      color: '#27AE60',
     },
     button: {
       width: 20,
@@ -61,15 +62,17 @@ export const getStyles = (theme: any) => {
       backgroundColor: '#fff',
       borderRadius: 10,
       marginVertical: 8,
-      marginHorizontal: 16,
+      marginHorizontal: 10,
       shadowColor: '#000',
       shadowOffset: {width: 0, height: 2},
       shadowOpacity: 0.23,
       shadowRadius: 2.62,
       elevation: 4,
+      borderWidth: 1,
+      paddingHorizontal: 5,
     },
     likedImage: {
-      width: 165,
+      width: 150,
       height: 148,
       backgroundColor: '#f0f0f0',
       borderTopLeftRadius: 10,
@@ -79,7 +82,6 @@ export const getStyles = (theme: any) => {
       flex: 1,
       width: '100%',
       height: 72,
-      padding: 12,
       borderBottomLeftRadius: 10,
       borderBottomRightRadius: 10,
     },

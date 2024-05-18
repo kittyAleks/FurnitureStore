@@ -18,7 +18,7 @@ export const productsSlice = createSlice({
         state.loading = true;
       })
       .addCase(getProducts.fulfilled, (state, action) => {
-        state.products = action.payload.products;
+        state.products = action.payload.updatedProducts;
         state.loading = false;
       })
       .addCase(getProducts.rejected, (state, action) => {

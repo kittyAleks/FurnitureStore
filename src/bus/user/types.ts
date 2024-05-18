@@ -1,17 +1,30 @@
 import {CaseReducer, PayloadAction} from '@reduxjs/toolkit';
-export type User = {
+export type UserData = {
+  _id: string;
   email: string;
-  password: string;
+  likedProducts: string[];
+  cartProducts: string[];
 };
 
 export type UserState = {
-  user: User | null;
+  user: UserData | null;
   accessToken: string | null;
   refreshToken: string | null;
   error: string | null;
   message: string | null;
   status: number | null;
   isAuth: boolean;
+};
+
+export type LoginResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+export type LoadUserResponse = {
+  // accessToken: string;
+  // refreshToken: string;
+  user: UserData;
 };
 
 interface AxiosResponseData {

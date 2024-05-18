@@ -25,6 +25,7 @@ const login = async (req, res) => {
 
     // Find user in DB by email
     const user = await USER.findOne({email});
+    console.log('MyUser', user);
     if (!user) {
       return res
         .status(400)
@@ -39,6 +40,7 @@ const login = async (req, res) => {
     }
 
     const {accessToken, refreshToken} = generateToken(user);
+    console.log('MyaccessToken', accessToken);
     return res
       .status(200)
       .json({message: 'Login successful!', accessToken, refreshToken});
@@ -49,11 +51,40 @@ const login = async (req, res) => {
       .json({message: 'Server error. Please try again later.'});
   }
 };
+const getUserData = async (req, res) => {
+  console.log('MyReq', req.headers.authorization.split(' ')[1]);
+  try {
+    const accessToken = req.headers.authorization.split(' ')[1];
+    if (!accessToken) {
+      return res.status(401).json({message: 'Access token not found'});
+    }
+    const userData = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    console.log('MyUserData', userData);
+    if (!userData) {
+      return res.status(403).json({message: 'Invalid access token'});
+    }
+    const user = await USER.findById(userData.id);
+    console.log('ServerMyUser', user);
+    if (!user) {
+      return res.status(404).json({message: 'User not found'});
+    } else {
+      return res.status(200).json(user);
+    }
+  } catch (error) {
+    console.error('Server error:', error);
+    return res
+      .status(500)
+      .json({message: 'Server error. Please try again later.'});
+  }
+};
+
 const token = async (req, res) => {
   try {
     const {refreshToken} = req.body;
     if (!refreshToken) {
-      return res.status(401).json({message: 'Refresh Token is required'});
+      return res
+        .status(401)
+        .json({message: 'Token has expired, please refresh token'});
     }
     const userData = verifyRefreshToken(refreshToken);
     if (!userData) {
@@ -73,4 +104,4 @@ const token = async (req, res) => {
   }
 };
 
-module.exports = {register, login, token};
+module.exports = {register, login, getUserData, token};

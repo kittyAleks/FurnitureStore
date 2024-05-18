@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+const {Schema} = mongoose;
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -10,6 +10,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  likedProducts: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Products',
+    },
+  ],
 });
 
 const User = mongoose.model('User', userSchema);

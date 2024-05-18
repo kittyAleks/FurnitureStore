@@ -1,9 +1,10 @@
-import React, {FC} from 'react';
+import React, {FC, useContext} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Animated from 'react-native-reanimated';
 
 import {getStyles} from '../../screens/Products/style';
+import {ThemeContext} from '../../../index';
 
 type LikedProductCardProps = {
   item: {
@@ -16,12 +17,20 @@ type LikedProductCardProps = {
 };
 
 export const LikedProductCard: FC<LikedProductCardProps> = ({item}) => {
-  const styles = getStyles();
+  const {theme} = useContext(ThemeContext);
+  const styles = getStyles(theme);
 
   return (
     <Animated.View style={styles.likedCard}>
       <View>
-        <Image source={{uri: item.imageUrl}} style={styles.likedImage} />
+        <Image
+          source={{
+            uri: item.imageUrl
+              ? item.imageUrl
+              : 'https://via.placeholder.com/150',
+          }}
+          style={styles.likedImage}
+        />
         <TouchableOpacity style={styles.heartIcon}>
           <Ionicons name="heart" size={24} color="#FF0000" />
         </TouchableOpacity>

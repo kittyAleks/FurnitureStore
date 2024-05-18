@@ -63,7 +63,7 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
         key={item._id}
         style={[itemStyle, styles.card, backgroundColor]}>
         <Image
-          source={require('../../../assets/products/table.png')}
+          source={{uri: item.imageUrl ? item.imageUrl : null}}
           style={styles.image}
         />
         <View style={styles.infoContainer}>

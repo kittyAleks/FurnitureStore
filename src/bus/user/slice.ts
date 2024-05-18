@@ -1,14 +1,14 @@
 import {
-  ActionReducerMapBuilder,
   createSlice,
   PayloadAction,
+  ActionReducerMapBuilder,
 } from '@reduxjs/toolkit';
 
 import * as types from './types';
 
 import {createUser, loadUser, loginUser, logoutUser} from './thunk/user';
 
-const initialState = {
+const initialState: types.UserState = {
   user: null,
   accessToken: null,
   refreshToken: null,

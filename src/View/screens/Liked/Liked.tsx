@@ -1,5 +1,5 @@
-import React, {FC} from 'react';
-import {Image, Text} from 'react-native';
+import React, {FC, useEffect} from 'react';
+import {ActivityIndicator, Image, Text, View} from 'react-native';
 import {useContext} from 'react';
 
 import {ThemeContext} from '../../../index';
@@ -16,6 +16,7 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useLikedProduct} from '../../../bus/likedProduct';
 
 const HEADER_MAX_HEIGHT = 150;
 const HEADER_MIN_HEIGHT = 20;
@@ -33,66 +34,11 @@ export const Liked: FC<
 
   const scale = useSharedValue(1);
 
-  // const {likeProducts} = useLikedProduct();
-  // console.log('likeProducts', likeProducts);
-  const likeProducts = [
-    {
-      _id: '1',
-      title: 'Product 1',
-      description: 'Description 1',
-      price: '100',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      _id: '2',
-      title: 'Product 2',
-      description: 'Description 2',
-      price: '200',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      _id: '3',
-      title: 'Product 3',
-      description: 'Description 3',
-      price: '300',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      _id: '4',
-      title: 'Product 4',
-      description: 'Description 4',
-      price: '400',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      _id: '5',
-      title: 'Product 5',
-      description: 'Description 5',
-      price: '500',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      _id: '6',
-      title: 'Product 6',
-      description: 'Description 6',
-      price: '600',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      _id: '7',
-      title: 'Product 7',
-      description: 'Description 7',
-      price: '700',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-    {
-      _id: '8',
-      title: 'Product 8',
-      description: 'Description 8',
-      price: '800',
-      imageUrl: 'https://via.placeholder.com/150',
-    },
-  ];
+  const {likeProducts, fetchLikedProducts, loading} = useLikedProduct();
+  console.log('EWlikeProducts', likeProducts);
+  useEffect(() => {
+    fetchLikedProducts();
+  }, []);
 
   const onScrollHandler = useAnimatedScrollHandler(event => {
     const scrollY = event.contentOffset.y;
@@ -120,14 +66,13 @@ export const Liked: FC<
       transform: [{scale: scale.value}],
     };
   });
-
   return (
     <>
       <Animated.View
         style={[
           animatedHeightStyle,
           {
-            backgroundColor: 'orange',
+            backgroundColor: '#4A90E2',
             justifyContent: 'center',
             height: HEADER_HEIGHT,
             opacity,
@@ -142,13 +87,35 @@ export const Liked: FC<
               paddingTop: insets.top,
               paddingBottom: 30,
               opacity,
+              color: '#FFFFFF',
             },
           ]}>
           My products
         </Animated.Text>
       </Animated.View>
 
-      {likeProducts && likeProducts.length > 0 ? (
+      {!loading && (!likeProducts || likeProducts.length === 0) && (
+        <View
+          style={{
+            justifyContent: 'center',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}>
+          <Text style={styles.quantity}>0 products</Text>
+          <Image
+            source={require('../../../assets/liked/Book.png')}
+            style={{width: 276, height: 200, marginTop: 100}}
+          />
+          <Text style={styles.mainText}>Your wishlist is empty</Text>
+          <Text style={styles.secondText}>
+            It seems that you haven't added anything to your wishlist yet.
+          </Text>
+        </View>
+      )}
+
+      {loading ? (
+        <ActivityIndicator color={'#ABC4AA'} size={'large'} />
+      ) : (
         <Animated.FlatList
           onScroll={onScrollHandler}
           scrollEventThrottle={16}
@@ -164,18 +131,6 @@ export const Liked: FC<
             );
           }}
         />
-      ) : (
-        <>
-          <Text style={styles.quantity}>0 products</Text>
-          <Image
-            source={require('../../../assets/liked/Book.png')}
-            style={{width: 276, height: 200, marginTop: 100}}
-          />
-          <Text style={styles.mainText}>Your wishlist is empty</Text>
-          <Text style={styles.secondText}>
-            It seems that you haven't added anything to your wishlist yet.
-          </Text>
-        </>
       )}
     </>
   );

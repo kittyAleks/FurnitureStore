@@ -1,4 +1,4 @@
-import {useDispatch, useSelector} from '../../hooks';
+import {useDispatch, useSelector} from '../../tools/hooks';
 
 import {User} from './types';
 import {createUser, loadUser, loginUser, logoutUser} from './thunk/user';

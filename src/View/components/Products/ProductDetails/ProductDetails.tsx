@@ -72,10 +72,10 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
     fetchLikedStatus();
   }, []);
 
-  const likeProductById = (id: string) => {
+  const likeProduct = (id: string) => {
     likedProduct(id);
   };
-  const unlikeProductById = (id: string) => {
+  const unlikeProduct = (id: string) => {
     unLikedProduct(id);
   };
 
@@ -197,6 +197,7 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
                   style={{paddingLeft: 40}}
                   onPress={async () => {
                     const newLikedStatus = !liked;
+                    console.log('newLikedStatus', newLikedStatus);
                     await AsyncStorage.setItem(
                       'liked',
                       JSON.stringify(newLikedStatus),
@@ -204,9 +205,9 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
                     setLiked(newLikedStatus);
                     const productId = item._id.toString();
                     if (newLikedStatus) {
-                      likeProductById(productId);
+                      likeProduct(productId);
                     } else {
-                      unlikeProductById(productId);
+                      unlikeProduct(productId);
                     }
                   }}>
                   <Ionicons

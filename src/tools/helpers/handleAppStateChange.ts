@@ -1,6 +1,6 @@
 import {Appearance} from 'react-native';
-import {DarkTheme} from '../assets/themes/darkTheme';
-import {LightTheme} from '../assets/themes/lightTheme';
+import {DarkTheme} from '../../assets/themes/darkTheme';
+import {LightTheme} from '../../assets/themes/lightTheme';
 
 export const handleAppStateChange =
   (setTheme: any) => (nextAppState: string) => {

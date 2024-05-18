@@ -55,6 +55,7 @@ export const loadUser = createAsyncThunk<any>(
       if (accessToken && refreshToken) {
         return {accessToken, refreshToken};
       } else {
+        console.log('Token_not found');
         return rejectWithValue({message: 'Token not found'});
       }
     } catch (error) {
