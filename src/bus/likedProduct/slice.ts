@@ -1,7 +1,4 @@
-import {
-  ActionReducerMapBuilder,
-  createSlice,
-} from '@reduxjs/toolkit';
+import {ActionReducerMapBuilder, createSlice} from '@reduxjs/toolkit';
 
 import * as types from './types';
 import {saveLikedProduct} from './thunk/likedProduct';
