@@ -2,6 +2,7 @@ import {configureStore} from '@reduxjs/toolkit';
 import {middleware} from './middleware';
 
 // MarkerGen reducers
+import cards from '../../bus/cards/slice';
 import likedProduct from '../../bus/likedProduct/slice';
 import products from '../../bus/products/slice';
 import user from '../../bus/user/slice';
@@ -11,6 +12,7 @@ export const store = configureStore({
     user,
     products,
     likedProduct,
+    cards,
   },
   middleware,
 });

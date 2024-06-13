@@ -1,5 +1,5 @@
 import React, {FC, useEffect} from 'react';
-import {ActivityIndicator, Button, View} from 'react-native';
+import {ActivityIndicator, Button} from 'react-native';
 import {useContext} from 'react';
 import Animated, {
   Extrapolation,
@@ -25,6 +25,7 @@ import {useUser} from '../../../bus/user';
 const HEADER_MAX_HEIGHT = 140;
 const HEADER_MIN_HEIGHT = 20;
 const HEADER_HEIGHT = 120;
+
 export const Products: FC<
   PrivateStackScreenProps & (LightThemeType | DarkThemeType)
 > = () => {
@@ -32,7 +33,6 @@ export const Products: FC<
   const {logout} = useUser();
   const styles = getStyles(theme);
   const {getProductsList, products} = useProducts();
-  console.log('ЦЦproducts', products);
   const {products: productsList, loading} = products;
 
   const height = useSharedValue(HEADER_HEIGHT);
@@ -50,6 +50,7 @@ export const Products: FC<
       Extrapolation.CLAMP,
     );
   });
+
   const animatedHeightStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
       height.value,
@@ -64,6 +65,7 @@ export const Products: FC<
       Extrapolation.CLAMP,
     ),
   }));
+
   useEffect(() => {
     height.value = withRepeat(withTiming(HEADER_HEIGHT, {duration: 1500}));
   }, []);
@@ -71,6 +73,7 @@ export const Products: FC<
   const handleLogout = () => {
     logout();
   };
+
   useEffect(() => {
     getProductsList();
   }, []);
@@ -88,22 +91,20 @@ export const Products: FC<
           },
         ]}>
         <Animated.Text
-          style={[
-            {
-              fontSize: 20,
-              fontWeight: '700',
-              paddingTop: insets.top,
-              paddingBottom: 30,
-              color: '#FFFFFF',
-            },
-          ]}>
+          style={{
+            fontSize: 20,
+            fontWeight: '700',
+            paddingTop: insets.top,
+            paddingBottom: 30,
+            color: '#FFFFFF',
+          }}>
           My products
         </Animated.Text>
       </Animated.View>
 
-      <View style={styles.container}>
+      <Animated.View style={styles.container}>
         {loading ? (
-          <ActivityIndicator size={'large'} />
+          <ActivityIndicator size="large" />
         ) : (
           <Animated.FlatList
             onScroll={onScrollHandler}
@@ -113,8 +114,8 @@ export const Products: FC<
             keyExtractor={item => item._id}
           />
         )}
-      </View>
-      <Button title={'Logout'} onPress={handleLogout} />
+      </Animated.View>
+      <Button title="Logout" onPress={handleLogout} />
     </>
   );
 };

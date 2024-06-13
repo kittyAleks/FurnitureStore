@@ -4,12 +4,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {View, Text} from 'react-native';
 
 import {Book} from './book';
-import {ThemeContext} from '../../index';
 import {Products} from '../screens';
 import {PrivateStackParamList} from './types';
 import {ProductDetails} from '../components/Products/ProductDetails/ProductDetails';
 import {Liked} from '../screens/Liked/Liked';
 import CustomTabBar from './CustomTabBar/CustomTabBar';
+import {PaymentScreen} from '../screens/Payment';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,6 +56,11 @@ export const Private: FC = () => {
         name="Liked"
         component={Liked}
         options={{title: 'Liked', headerShown: false}}
+      />
+      <Tab.Screen
+        name="Payment"
+        component={PaymentScreen}
+        options={{title: 'Payment', headerShown: false}}
       />
     </Tab.Navigator>
   );

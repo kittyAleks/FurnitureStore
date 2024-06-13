@@ -5,6 +5,8 @@ const app = express();
 const mongoose = require('mongoose');
 const Routes = require('./routes/authRoutes');
 const ProductRoutes = require('./routes/productRoutes');
+const cardsRoutes = require('./routes/cardsRoutes');
+
 mongoose
   // .connect(
   //   'mongodb+srv://ArziAleks:Qwerty18071807@furniturestoredb.wprqbgd.mongodb.net/MyAppDB',
@@ -17,6 +19,7 @@ app.use(express.json()); // Middleware для парсинга JSON.
 
 app.use('/users', Routes);
 app.use('/products', ProductRoutes);
+app.use('/cards', cardsRoutes);
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');

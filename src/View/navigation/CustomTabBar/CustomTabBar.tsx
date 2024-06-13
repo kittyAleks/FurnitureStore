@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {FC, useEffect} from 'react';
 import {View, TouchableOpacity, StyleSheet, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,7 +11,12 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-const IconComponent = ({routeName, isFocused}) => {
+type IconComponentProps = {
+  routeName: string;
+  isFocused: boolean;
+};
+
+const IconComponent: FC<IconComponentProps> = ({routeName, isFocused}) => {
   const color = useSharedValue(0);
   const scale = useSharedValue(1);
   const colorAnimatedStyle = useAnimatedStyle(() => {
@@ -38,6 +43,9 @@ const IconComponent = ({routeName, isFocused}) => {
       break;
     case 'Cart':
       iconName = isFocused ? 'cart' : 'cart-outline';
+      break;
+    case 'Payment':
+      iconName = isFocused ? 'card' : 'card-outline';
       break;
     default:
       iconName = isFocused ? 'home' : 'home-outline';

@@ -2,6 +2,7 @@ import React, {FC, useMemo} from 'react';
 import {Image, Text, TouchableOpacity, View} from 'react-native';
 import Animated, {
   interpolateColor,
+  runOnJS,
   useAnimatedStyle,
   useSharedValue,
   withSequence,
@@ -29,10 +30,10 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
   const styles = useMemo(() => getStyles(theme), [theme]);
   const navigation = useNavigation<ProductItemNavigationProp>();
   const scale = useSharedValue(1);
-  const backgroundColor = useSharedValue('#FFF2F6AF');
   const progress = useSharedValue(0);
 
   const itemStyle = useAnimatedStyle(() => {
+    'worklet';
     const backgroundColor = interpolateColor(
       progress.value,
       [0, 1],
@@ -45,6 +46,7 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
   });
 
   const goToDetailProduct = () => {
+    'worklet';
     progress.value = withTiming(1, {duration: 100}, () => {
       progress.value = withSpring(0, {damping: 2});
       scale.value = withSequence(
@@ -58,14 +60,12 @@ export const ProductItem: FC<ProductItemType> = ({item, theme}) => {
   };
 
   return (
-    <TouchableOpacity onPress={goToDetailProduct}>
-      <Animated.View
-        key={item._id}
-        style={[itemStyle, styles.card, backgroundColor]}>
-        <Image
-          source={{uri: item.imageUrl ? item.imageUrl : null}}
-          style={styles.image}
-        />
+    <TouchableOpacity
+      onPress={() => {
+        runOnJS(goToDetailProduct)();
+      }}>
+      <Animated.View key={item._id} style={[itemStyle, styles.card]}>
+        <Image source={{uri: item.imageUrl || null}} style={styles.image} />
         <View style={styles.infoContainer}>
           <Text style={styles.title}>{item.title}</Text>
           <Text style={styles.description}>{item.description}</Text>

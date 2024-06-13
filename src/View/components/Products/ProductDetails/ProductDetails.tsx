@@ -2,17 +2,19 @@ import React, {FC, useContext, useEffect, useRef, useState} from 'react';
 import {
   Text,
   View,
-  Animated,
   Dimensions,
   SafeAreaView,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-
-import {useNavigation} from '@react-navigation/native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  runOnJS,
+} from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import {ThemeContext} from '../../../../index';
 import {getStyles} from '../style';
 import {ProductDetailsRouteProp} from '../../../navigation/types';
@@ -32,34 +34,14 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
   const styles = getStyles(theme);
   const [activeIndex, setActiveIndex] = useState(0);
   const [colorCircle, setColorCircle] = useState([
-    {
-      color: '#000000',
-      id: 1,
-      borderColor: '#000000',
-      borderWidth: 2,
-    },
-    {
-      color: '#8E8E8E',
-      id: 2,
-      borderColor: '#8E8E8E',
-      borderWidth: 2,
-    },
-    {
-      borderWidth: 2,
-      color: '#A9907E',
-      id: 3,
-      borderColor: '#A9907E',
-    },
-    {
-      borderWidth: 2,
-      borderColor: '#404F4C',
-      color: '#404F4C',
-      id: 4,
-    },
+    {color: '#000000', id: 1, borderColor: '#000000', borderWidth: 2},
+    {color: '#8E8E8E', id: 2, borderColor: '#8E8E8E', borderWidth: 2},
+    {borderWidth: 2, color: '#A9907E', id: 3, borderColor: '#A9907E'},
+    {borderWidth: 2, borderColor: '#404F4C', color: '#404F4C', id: 4},
   ]);
 
   const flatListRef = useRef(null);
-  const translateY = new Animated.Value(0);
+  const translateY = useSharedValue(300);
 
   useEffect(() => {
     const fetchLikedStatus = async () => {
@@ -80,19 +62,12 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
   };
 
   const showModal = () => {
-    Animated.timing(translateY, {
-      toValue: 0,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
+    translateY.value = withTiming(0, {duration: 500});
   };
   const hideModal = () => {
-    Animated.timing(translateY, {
-      toValue: 300,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
+    translateY.value = withTiming(300, {duration: 500});
   };
+
   const updateActiveIndex = (e: any) => {
     const contentOffsetX = e.nativeEvent.contentOffset.x;
     const newIndex = Math.round(
@@ -100,11 +75,13 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
     );
     setActiveIndex(newIndex);
   };
+
   const renderItem = ({item}: any) => (
     <View style={styles.item}>
       <Text style={styles.text}>{item}</Text>
     </View>
   );
+
   const renderIndicator = (index: number) => {
     return (
       <TouchableOpacity
@@ -118,30 +95,39 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
       />
     );
   };
+
   const setColor = (element: any) => {
     setColorCircle(
       colorCircle.map(item => {
         if (item.id === element.id) {
-          return {
-            ...item,
-            borderWidth: 3,
-            borderColor: item.color,
-          };
+          return {...item, borderWidth: 3, borderColor: item.color};
         }
-        return {
-          ...item,
-          borderWidth: 0,
-          borderColor: 'transparent',
-        };
+        return {...item, borderWidth: 0, borderColor: 'transparent'};
       }),
     );
   };
 
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{translateY: translateY.value}],
+    };
+  });
+
+  const toggleLike = async () => {
+    'worklet';
+    const newLikedStatus = !liked;
+    await AsyncStorage.setItem('liked', JSON.stringify(newLikedStatus));
+    setLiked(newLikedStatus);
+    const productId = item._id.toString();
+    if (newLikedStatus) {
+      likeProduct(productId);
+    } else {
+      unlikeProduct(productId);
+    }
+  };
+
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-      }}>
+    <SafeAreaView style={{flex: 1}}>
       <FlatList
         ref={flatListRef}
         data={[...new Array(6).keys()]}
@@ -162,17 +148,18 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
         </TouchableOpacity>
 
         <Animated.ScrollView
-          style={{
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-            backgroundColor: 'white',
-            width: '100%',
-            transform: [{translateY}],
-            position: 'absolute',
-            bottom: 0,
-            top: 50,
-            height: height / 2,
-          }}>
+          style={[
+            {
+              borderTopLeftRadius: 30,
+              borderTopRightRadius: 30,
+              backgroundColor: 'white',
+              width: '100%',
+              position: 'absolute',
+              bottom: 0,
+              height: height / 2,
+            },
+            animatedStyle,
+          ]}>
           <TouchableOpacity
             style={{
               height: '100%',
@@ -195,20 +182,8 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
                 <Text style={{fontSize: 24}}>{item.title}</Text>
                 <TouchableOpacity
                   style={{paddingLeft: 40}}
-                  onPress={async () => {
-                    const newLikedStatus = !liked;
-                    console.log('newLikedStatus', newLikedStatus);
-                    await AsyncStorage.setItem(
-                      'liked',
-                      JSON.stringify(newLikedStatus),
-                    );
-                    setLiked(newLikedStatus);
-                    const productId = item._id.toString();
-                    if (newLikedStatus) {
-                      likeProduct(productId);
-                    } else {
-                      unlikeProduct(productId);
-                    }
+                  onPress={() => {
+                    runOnJS(toggleLike)();
                   }}>
                   <Ionicons
                     name={liked ? 'heart' : 'heart-outline'}
@@ -221,36 +196,33 @@ export const ProductDetails: FC<ProductDetailsProps> = ({route}) => {
                 </Text>
               </View>
               <View style={{flexDirection: 'row', marginVertical: 10}}>
-                {colorCircle.map(item => {
-                  return (
-                    <TouchableOpacity
-                      key={item.id}
-                      onPress={() => {
-                        setColor(item);
-                      }}
+                {colorCircle.map(item => (
+                  <TouchableOpacity
+                    key={item.id}
+                    onPress={() => {
+                      setColor(item);
+                    }}
+                    style={{
+                      margin: 5,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      width: 30,
+                      height: 30,
+                      borderRadius: 15,
+                      backgroundColor: item.color,
+                    }}>
+                    <View
                       style={{
-                        margin: 5,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        width: 30,
-                        height: 30,
-                        borderRadius: 15,
-                        backgroundColor: item.color,
-                      }}>
-                      <View
-                        style={{
-                          width: 40,
-                          height: 40,
-                          borderRadius: 20,
-                          borderColor: item.borderColor,
-                          borderWidth: item.borderWidth,
-                        }}
-                      />
-                    </TouchableOpacity>
-                  );
-                })}
+                        width: 40,
+                        height: 40,
+                        borderRadius: 20,
+                        borderColor: item.borderColor,
+                        borderWidth: item.borderWidth,
+                      }}
+                    />
+                  </TouchableOpacity>
+                ))}
               </View>
-
               <Text>{item.description}</Text>
             </View>
             <TouchableOpacity style={styles.buttonCart}>

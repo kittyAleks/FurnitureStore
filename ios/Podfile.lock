@@ -462,10 +462,10 @@ PODS:
   - RNCCheckbox (0.5.16):
     - BEMCheckBox (~> 1.4)
     - React-Core
-  - RNGestureHandler (2.14.0):
+  - RNGestureHandler (2.16.2):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - RNReanimated (3.8.1):
+  - RNReanimated (3.12.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
     - ReactCommon/turbomodule/core
@@ -476,6 +476,42 @@ PODS:
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - SocketRocket (0.6.1)
+  - Stripe (23.27.1):
+    - StripeApplePay (= 23.27.1)
+    - StripeCore (= 23.27.1)
+    - StripePayments (= 23.27.1)
+    - StripePaymentsUI (= 23.27.1)
+    - StripeUICore (= 23.27.1)
+  - stripe-react-native (0.38.0):
+    - React-Core
+    - Stripe (~> 23.27.0)
+    - StripeApplePay (~> 23.27.0)
+    - StripeFinancialConnections (~> 23.27.0)
+    - StripePayments (~> 23.27.0)
+    - StripePaymentSheet (~> 23.27.0)
+    - StripePaymentsUI (~> 23.27.0)
+  - StripeApplePay (23.27.1):
+    - StripeCore (= 23.27.1)
+  - StripeCore (23.27.1)
+  - StripeFinancialConnections (23.27.1):
+    - StripeCore (= 23.27.1)
+    - StripeUICore (= 23.27.1)
+  - StripePayments (23.27.1):
+    - StripeCore (= 23.27.1)
+    - StripePayments/Stripe3DS2 (= 23.27.1)
+  - StripePayments/Stripe3DS2 (23.27.1):
+    - StripeCore (= 23.27.1)
+  - StripePaymentSheet (23.27.1):
+    - StripeApplePay (= 23.27.1)
+    - StripeCore (= 23.27.1)
+    - StripePayments (= 23.27.1)
+    - StripePaymentsUI (= 23.27.1)
+  - StripePaymentsUI (23.27.1):
+    - StripeCore (= 23.27.1)
+    - StripePayments (= 23.27.1)
+    - StripeUICore (= 23.27.1)
+  - StripeUICore (23.27.1):
+    - StripeCore (= 23.27.1)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -550,6 +586,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -568,6 +605,14 @@ SPEC REPOS:
     - libevent
     - OpenSSL-Universal
     - SocketRocket
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeFinancialConnections
+    - StripePayments
+    - StripePaymentSheet
+    - StripePaymentsUI
+    - StripeUICore
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -663,6 +708,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -722,14 +769,23 @@ SPEC CHECKSUMS:
   ReactCommon: 5f73972d2abd8a85e44f27317bf77418a74d3340
   RNCAsyncStorage: 618d03a5f52fbccb3d7010076bc54712844c18ef
   RNCCheckbox: 75255b03e604bbcc26411eb31c4cbe3e3865f538
-  RNGestureHandler: 32a01c29ecc9bb0b5bf7bc0a33547f61b4dc2741
-  RNReanimated: f4798af7dede23d41039f0bc372710ead86e90c7
+  RNGestureHandler: d678f94a8f74de70ce3d9f5d23eb0f97b686e943
+  RNReanimated: 62a6c9f90f639612b830824b25ab2cea5d65d162
   RNScreens: 3c2d122f5e08c192e254c510b212306da97d2581
   RNVectorIcons: 23b6e11af4aaf104d169b1b0afa7e5cf96c676ce
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
+  Stripe: f2bde666c4d38f32237145fd1f703ceec0a75c15
+  stripe-react-native: c89f0b9abbac8a4093695a85ac34cc09f8935d0c
+  StripeApplePay: 89943feba80f78c84b3a2741913fc19f8cb534cd
+  StripeCore: acb607d9f1bab7b8b57dd271f37353aae9e5e803
+  StripeFinancialConnections: 225c96e226cc4797f31112304dc4e3eba99921ab
+  StripePayments: 6516caea144600b2dbcb953b53b5a534e080340c
+  StripePaymentSheet: dd98d76f204c55aee31c0b8fc8d8917cdf762e0e
+  StripePaymentsUI: 15645d3ab6f140efda33b69d94607e8a813f8951
+  StripeUICore: c60c85edb5e87ffc0cab05f4c808ca370dfde31c
   Yoga: b76f1acfda8212aa16b7e26bcce3983230c82603
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: bf6aeaa3eccaa9cba6120b583c44531267466564
+PODFILE CHECKSUM: 936d32e54f054fa7d247839a3d8ebf57e6e51f55
 
 COCOAPODS: 1.11.3
